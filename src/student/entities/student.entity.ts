@@ -1,3 +1,5 @@
+import {BaseEntity, Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn} from "typeorm";
+
 enum expectedTypeWork {
     Local,
     ReadyToMove,
@@ -13,6 +15,7 @@ enum expectedContractType {
     NoPreferences,
 };
 
+@Entity()
 export class Student {
     email: string;
     tel: number | null;
