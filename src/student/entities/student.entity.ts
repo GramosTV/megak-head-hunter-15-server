@@ -1,28 +1,10 @@
 import { BaseEntity, Column, Entity, PrimaryColumn } from "typeorm";
+import { ExpectedContractType, ExpectedTypeWork } from "../interfaces/student";
 
-enum expectedTypeWork {
-    Local,
-    ReadyToMove,
-    Remote,
-    Hybrid,
-    All,
-};
-
-enum expectedContractType {
-    EmploymentContract,
-    B2B,
-    CommisionContract,
-    NoPreferences,
-};
 
 @Entity()
 export class Student extends BaseEntity {
-    @PrimaryColumn({
-        width: 320,
-        type: "text",
-        unique: true,
-        nullable: false,
-    })
+    @PrimaryColumn()
     email: string;
 
     @Column({
@@ -33,22 +15,22 @@ export class Student extends BaseEntity {
     tel: number | null;
 
     @Column({
-        width: 256,
-        type: "tinytext",
+        width: 255,
+        type: "text",
         nullable: false,
     })
     firstName: string;
 
     @Column({
         width: 128,
-        type: "tinytext",
+        type: "text",
         nullable: false,
     })
     lastName: string;
 
     @Column({
         width: 39,
-        type: "tinytext",
+        type: "text",
         nullable: false,
     })
     githubUsername: string;
@@ -69,30 +51,30 @@ export class Student extends BaseEntity {
 
     @Column({
         width: 250,
-        type: "tinytext",
+        type: "text",
         nullable: true,
     })
     bio: string | null;
 
     @Column({
-        width: 11,
-        type: "tinytext",
+        type: "enum",
+        enum: ExpectedTypeWork,
         nullable: false,
     })
-    expectedTypeWork: expectedTypeWork;
+    expectedTypeWork: ExpectedTypeWork;
 
     @Column({
         width: 189,
-        type: "tinytext",
+        type: "text",
         nullable: true,
     })
     targetWorkCity: string | null;
 
     @Column({
-        width: 18,
-        type: "tinytext",
+        type: "enum",
+        enum: ExpectedContractType,
     })
-    expectedContractType: expectedContractType;
+    expectedContractType: ExpectedContractType;
 
     @Column({
         width: 5,
@@ -117,21 +99,21 @@ export class Student extends BaseEntity {
 
     @Column({
         width: 2000,
-        type: "longtext",
+        type: "text",
         nullable: true,
     })
     education: string | null;
 
     @Column({
         width: 2000,
-        type: "longtext",
+        type: "text",
         nullable: true,
     })
     workExperience: string | null;
 
     @Column({
         width: 2000,
-        type: "longtext",
+        type: "text",
         nullable: true,
     })
     courses: string | null;
