@@ -1,4 +1,4 @@
-import {BaseEntity, Column, Entity } from "typeorm";
+import { BaseEntity, Column, Entity, PrimaryColumn } from "typeorm";
 
 enum expectedTypeWork {
     Local,
@@ -17,8 +17,8 @@ enum expectedContractType {
 
 @Entity()
 export class Student extends BaseEntity {
-    @Column({
-        length: 320,
+    @PrimaryColumn({
+        width: 320,
         type: "text",
         unique: true,
         nullable: false,
@@ -26,76 +26,76 @@ export class Student extends BaseEntity {
     email: string;
 
     @Column({
-        length: 15,
+        width: 15,
         type: "tinyint",
         nullable: true,
     })
     tel: number | null;
 
     @Column({
-        length: 256,
+        width: 256,
         type: "tinytext",
         nullable: false,
     })
     firstName: string;
 
     @Column({
-        length: 128,
+        width: 128,
         type: "tinytext",
         nullable: false,
     })
     lastName: string;
 
     @Column({
-        length: 39,
+        width: 39,
         type: "tinytext",
         nullable: false,
     })
     githubUsername: string;
 
     @Column({
-        length: 2000,
+        width: 2000,
         type: "text",
         nullable: true,
     })
     portfolioUrls: string | null;
 
     @Column({
-        length: 2000,
+        width: 2000,
         type: "text",
         nullable: false,
     })
     projectUrls: string;
 
     @Column({
-        length: 250,
+        width: 250,
         type: "tinytext",
         nullable: true,
     })
     bio: string | null;
 
     @Column({
-        length: 11,
+        width: 11,
         type: "tinytext",
         nullable: false,
     })
     expectedTypeWork: expectedTypeWork;
 
     @Column({
-        length: 189,
+        width: 189,
         type: "tinytext",
         nullable: true,
     })
     targetWorkCity: string | null;
 
     @Column({
-        length: 18,
+        width: 18,
         type: "tinytext",
     })
     expectedContractType: expectedContractType;
 
     @Column({
-        length: 5,
+        width: 5,
         type: "tinyint",
         nullable: true,
     })
@@ -109,28 +109,28 @@ export class Student extends BaseEntity {
     canTakeApprenticeship: boolean;
 
     @Column({
-        length: 2,
+        width: 2,
         type: "tinyint",
         nullable: false,
     })
     monthsOfCommercialExp: number;
 
     @Column({
-        length: 2000,
+        width: 2000,
         type: "longtext",
         nullable: true,
     })
     education: string | null;
 
     @Column({
-        length: 2000,
+        width: 2000,
         type: "longtext",
         nullable: true,
     })
     workExperience: string | null;
 
     @Column({
-        length: 2000,
+        width: 2000,
         type: "longtext",
         nullable: true,
     })
