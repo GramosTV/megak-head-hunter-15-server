@@ -38,4 +38,27 @@ export class AuthService {
 
     return token;
   }
+
+  async login(req: AuthLoginDto, res: Response): Promise<any> {
+    try {
+      const user = await Student.findOneBy({
+        email: req.email,
+        pwdHash: hashPwd(req.pwd),
+      });
+      if (!user) {
+        return res.json({ error: 'Invalid login data' });
+      }
+      const token = this.createToken(await this.generateToken(user));
+
+      return res
+        .cookie('jwt', token.accessToken, {
+          secure: false,
+          domain: 'localhost',
+          httpOnly: true,
+        })
+        .json({ ok: true });
+    } catch (e) {
+      return res.json({ error: e.message });
+    }
+  }
 }
