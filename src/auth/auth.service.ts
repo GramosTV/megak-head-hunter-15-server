@@ -15,11 +15,7 @@ export class AuthService {
   } {
     const payload: JwtPayload = { id: currentTokenId };
     const expiresIn = 60 * 60 * 24;
-    const accessToken = sign(
-      payload,
-      'jkfdsufefnoisdfiosdfoweiofoifnodsifnosdnfsdfsdf',
-      { expiresIn },
-    );
+    const accessToken = sign(payload, process.env.JWT_SECRET, { expiresIn });
     return {
       accessToken,
       expiresIn,
