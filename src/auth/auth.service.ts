@@ -39,7 +39,7 @@ export class AuthService {
     try {
       const user = await Student.findOneBy({
         email: req.email,
-        pwdHash: hashPwd(req.pwd),
+        password: hashPwd(req.password),
       });
       if (!user) {
         return res.json({ error: 'Invalid login data' });
