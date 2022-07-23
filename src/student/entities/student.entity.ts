@@ -136,4 +136,5 @@ export class Student extends BaseEntity {
     default: null,
   })
   currentTokenId: string | null;
+
 }
