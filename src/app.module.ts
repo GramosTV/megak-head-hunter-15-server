@@ -7,6 +7,7 @@ import { HrModule } from './hr/hr.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MailModule } from './mail/mail.module';
+import { AuthModule } from './auth/auth.module';
 import dbConfiguration from './config/db.config';
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import dbConfiguration from './config/db.config';
     StudentModule,
     HrModule,
     MailModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
