@@ -130,4 +130,11 @@ export class Student extends BaseEntity {
     nullable: true,
   })
   courses: string | null;
+
+  @Column({
+    nullable: true,
+    default: null,
+  })
+  currentTokenId: string | null;
+
 }
