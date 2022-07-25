@@ -1,8 +1,12 @@
 import { BaseEntity, Column, Entity, PrimaryColumn } from 'typeorm';
-import { ExpectedContractType, ExpectedTypeWork } from '../interfaces/student';
+import {
+  ExpectedContractType,
+  ExpectedTypeWork,
+  Role,
+} from '../interfaces/user';
 
 @Entity()
-export class Student extends BaseEntity {
+export class User extends BaseEntity {
   @PrimaryColumn('uuid')
   id: string;
 
@@ -16,7 +20,7 @@ export class Student extends BaseEntity {
   @Column({
     width: 255,
     type: 'text',
-    nullable: false,
+    nullable: true,
   })
   password: string;
 
@@ -30,21 +34,21 @@ export class Student extends BaseEntity {
   @Column({
     width: 255,
     type: 'text',
-    nullable: false,
+    nullable: true,
   })
-  firstName: string;
+  firstName: true;
 
   @Column({
     width: 128,
     type: 'text',
-    nullable: false,
+    nullable: true,
   })
   lastName: string;
 
   @Column({
     width: 39,
     type: 'text',
-    nullable: false,
+    nullable: true,
   })
   githubUsername: string;
 
@@ -58,7 +62,7 @@ export class Student extends BaseEntity {
   @Column({
     width: 2000,
     type: 'text',
-    nullable: false,
+    nullable: true,
   })
   projectUrls: string;
 
@@ -72,7 +76,7 @@ export class Student extends BaseEntity {
   @Column({
     type: 'enum',
     enum: ExpectedTypeWork,
-    nullable: false,
+    nullable: true,
   })
   expectedTypeWork: ExpectedTypeWork;
 
@@ -86,6 +90,7 @@ export class Student extends BaseEntity {
   @Column({
     type: 'enum',
     enum: ExpectedContractType,
+    nullable: true,
   })
   expectedContractType: ExpectedContractType;
 
@@ -99,14 +104,14 @@ export class Student extends BaseEntity {
   @Column({
     default: false,
     type: 'boolean',
-    nullable: false,
+    nullable: true,
   })
   canTakeApprenticeship: boolean;
 
   @Column({
     width: 2,
     type: 'tinyint',
-    nullable: false,
+    nullable: true,
   })
   monthsOfCommercialExp: number;
 
@@ -137,4 +142,33 @@ export class Student extends BaseEntity {
   })
   currentTokenId: string | null;
 
+  @Column({
+    type: 'enum',
+    enum: Role,
+    nullable: false,
+  })
+  role: Role;
+
+  //HR-only fields
+
+  @Column({
+    width: 384,
+    type: 'text',
+    nullable: true,
+  })
+  fullName: string;
+
+  @Column({
+    width: 160,
+    type: 'text',
+    nullable: true,
+  })
+  company: string;
+
+  @Column({
+    width: 3,
+    type: 'tinyint',
+    nullable: true,
+  })
+  maxReservedStudents: number;
 }

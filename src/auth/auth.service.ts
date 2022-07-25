@@ -5,7 +5,7 @@ import { hashPwd } from '../utils/hash-pwd';
 import { v4 as uuid } from 'uuid';
 import { sign } from 'jsonwebtoken';
 import { JwtPayload } from './jwt.strategy';
-import { Student } from '../student/entities/student.entity';
+import { User } from '../student/entities/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -22,12 +22,12 @@ export class AuthService {
     };
   }
 
-  private async generateToken(user: Student): Promise<string> {
+  private async generateToken(user: User): Promise<string> {
     let token;
     let userWithThisToken = null;
     do {
       token = uuid();
-      userWithThisToken = await Student.findOneBy({ currentTokenId: token });
+      userWithThisToken = await User.findOneBy({ currentTokenId: token });
     } while (!!userWithThisToken);
     user.currentTokenId = token;
     await user.save();
@@ -37,7 +37,7 @@ export class AuthService {
 
   async login(req: AuthLoginDto, res: Response): Promise<any> {
     try {
-      const user = await Student.findOneBy({
+      const user = await User.findOneBy({
         email: req.email,
         password: hashPwd(req.password),
       });
@@ -58,7 +58,7 @@ export class AuthService {
     }
   }
 
-  async logout(user: Student, res: Response) {
+  async logout(user: User, res: Response) {
     try {
       user.currentTokenId = null;
       await user.save();
