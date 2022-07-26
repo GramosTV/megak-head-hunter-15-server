@@ -1,8 +1,8 @@
 export interface AddHrSuccessResponse {
-  isSuccess: true;
+  ok: true;
   email: string;
   fullName: string;
   company: string;
 }
 
-export type AddHrResponse = AddHrSuccessResponse | { isSuccess: false };
+export type AddHrResponse = AddHrSuccessResponse | { ok: false };

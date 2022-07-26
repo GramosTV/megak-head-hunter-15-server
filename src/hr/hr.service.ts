@@ -29,7 +29,7 @@ export class HrService {
       maxReservedStudents > 999
     ) {
       return {
-        isSuccess: false,
+        ok: false,
       };
     }
 
@@ -44,7 +44,7 @@ export class HrService {
     await hr.save();
 
     return {
-      isSuccess: true,
+      ok: true,
       email: hr.email,
       company: hr.company,
       fullName: hr.fullName,
