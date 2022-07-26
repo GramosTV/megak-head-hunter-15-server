@@ -1,26 +1,55 @@
 import { Injectable } from '@nestjs/common';
-import { CreateHrDto } from './dto/create-hr.dto';
-import { UpdateHrDto } from './dto/update-hr.dto';
+import { AddHrDto } from './dto/add-hr.dto';
+import { AddHrResponse } from '../student/interfaces/add-hr';
+import { User } from 'src/student/entities/user.entity';
+import { HrInterface, Role } from '../student/interfaces/user';
 
 @Injectable()
 export class HrService {
-  create(createHrDto: CreateHrDto) {
-    return 'This action adds a new hr';
+  async checkIfEmailIsUnique(email: string): Promise<boolean> {
+    const user = await User.findOne({
+      where: {
+        email: email,
+      },
+    });
+    return !!user;
   }
 
-  findAll() {
-    return `This action returns all hr`;
-  }
+  async addHr(newHr: AddHrDto): Promise<AddHrResponse> {
+    const { email, fullName, company, maxReservedStudents } = newHr;
+    if (
+      !email ||
+      !fullName ||
+      !company ||
+      typeof maxReservedStudents !== 'number' ||
+      email.trim().length === 0 ||
+      fullName.trim().length === 0 ||
+      company.trim().length === 0 ||
+      !email.includes('@') ||
+      (await this.checkIfEmailIsUnique(email)) ||
+      maxReservedStudents < 1 ||
+      maxReservedStudents > 999
+    ) {
+      return {
+        ok: false,
+      };
+    }
 
-  findOne(id: number) {
-    return `This action returns a #${id} hr`;
-  }
+    const hr: HrInterface = new User();
 
-  update(id: number, updateHrDto: UpdateHrDto) {
-    return `This action updates a #${id} hr`;
-  }
+    hr.email = email;
+    hr.fullName = fullName;
+    hr.company = company;
+    hr.maxReservedStudents = maxReservedStudents;
+    hr.role = Role.HR;
 
-  remove(id: number) {
-    return `This action removes a #${id} hr`;
+    await hr.save();
+
+    return {
+      ok: true,
+      email: hr.email,
+      company: hr.company,
+      fullName: hr.fullName,
+    };
   }
 }
