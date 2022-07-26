@@ -72,4 +72,15 @@ export class AuthService {
       return res.json({ error: e.message });
     }
   }
+
+  async checkActiveUser(user: User, res: Response) {
+    return res.json({
+      email: user.email,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      fullName: user.fullName,
+      role: user.role,
+      ghUsername: user.githubUsername,
+    });
+  }
 }
