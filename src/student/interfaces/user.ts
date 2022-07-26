@@ -26,4 +26,5 @@ export interface HrInterface extends BaseEntity {
   fullName: string;
   company: string;
   maxReservedStudents: number;
+  role: Role;
 }
