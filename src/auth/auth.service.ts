@@ -81,6 +81,7 @@ export class AuthService {
       fullName: user.fullName,
       role: user.role,
       ghUsername: user.githubUsername,
+      maxReservedStudents: user.maxReservedStudents,
     });
   }
 }
