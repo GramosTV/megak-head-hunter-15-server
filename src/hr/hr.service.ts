@@ -23,6 +23,8 @@ export class HrService {
       !company ||
       typeof maxReservedStudents !== 'number' ||
       email.trim().length === 0 ||
+      fullName.trim().length === 0 ||
+      company.trim().length === 0 ||
       !email.includes('@') ||
       (await this.checkIfEmailIsUnique(email)) ||
       maxReservedStudents < 1 ||
