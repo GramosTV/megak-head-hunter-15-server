@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { AddHrDto } from './dto/add-hr.dto';
 import { AddHrResponse } from '../student/interfaces/add-hr';
 import { User } from 'src/student/entities/user.entity';
+import { HrInterface, Role } from '../student/interfaces/user';
 
 @Injectable()
 export class HrService {
@@ -16,5 +17,37 @@ export class HrService {
 
   async addHr(newHr: AddHrDto): Promise<AddHrResponse> {
     const { email, fullName, company, maxReservedStudents } = newHr;
+    if (
+      !email ||
+      !fullName ||
+      !company ||
+      typeof maxReservedStudents !== 'number' ||
+      email.trim().length === 0 ||
+      !email.includes('@') ||
+      (await this.checkIfEmailIsUnique(email)) ||
+      maxReservedStudents < 1 ||
+      maxReservedStudents > 999
+    ) {
+      return {
+        isSuccess: false,
+      };
+    }
+
+    const hr: HrInterface = new User();
+
+    hr.email = email;
+    hr.fullName = fullName;
+    hr.company = company;
+    hr.maxReservedStudents = maxReservedStudents;
+    hr.role = Role.HR;
+
+    await hr.save();
+
+    return {
+      isSuccess: true,
+      email: hr.email,
+      company: hr.company,
+      fullName: hr.fullName,
+    };
   }
 }
