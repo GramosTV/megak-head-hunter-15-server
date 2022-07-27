@@ -6,6 +6,7 @@ import { v4 as uuid } from 'uuid';
 import { sign } from 'jsonwebtoken';
 import { JwtPayload } from './jwt.strategy';
 import { User } from '../student/entities/user.entity';
+import { AuthUser } from '../../types';
 
 @Injectable()
 export class AuthService {
@@ -82,6 +83,6 @@ export class AuthService {
       role: user.role,
       ghUsername: user.githubUsername,
       maxReservedStudents: user.maxReservedStudents,
-    });
+    } as AuthUser);
   }
 }
