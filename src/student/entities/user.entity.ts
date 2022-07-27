@@ -22,7 +22,7 @@ export class User extends BaseEntity {
     type: 'text',
     nullable: true,
   })
-  password: string;
+  password: string | null;
 
   @Column({
     width: 15,
@@ -36,21 +36,21 @@ export class User extends BaseEntity {
     type: 'text',
     nullable: true,
   })
-  firstName: true;
+  firstName: string | null;
 
   @Column({
     width: 128,
     type: 'text',
     nullable: true,
   })
-  lastName: string;
+  lastName: string | null;
 
   @Column({
     width: 39,
     type: 'text',
     nullable: true,
   })
-  githubUsername: string;
+  githubUsername: string | null;
 
   @Column({
     width: 2000,
@@ -64,7 +64,7 @@ export class User extends BaseEntity {
     type: 'text',
     nullable: true,
   })
-  projectUrls: string;
+  projectUrls: string | null;
 
   @Column({
     width: 250,
@@ -78,7 +78,7 @@ export class User extends BaseEntity {
     enum: ExpectedTypeWork,
     nullable: true,
   })
-  expectedTypeWork: ExpectedTypeWork;
+  expectedTypeWork: ExpectedTypeWork | null;
 
   @Column({
     width: 189,
@@ -92,7 +92,7 @@ export class User extends BaseEntity {
     enum: ExpectedContractType,
     nullable: true,
   })
-  expectedContractType: ExpectedContractType;
+  expectedContractType: ExpectedContractType | null;
 
   @Column({
     width: 5,
@@ -113,7 +113,7 @@ export class User extends BaseEntity {
     type: 'tinyint',
     nullable: true,
   })
-  monthsOfCommercialExp: number;
+  monthsOfCommercialExp: number | null;
 
   @Column({
     width: 2000,
@@ -156,19 +156,19 @@ export class User extends BaseEntity {
     type: 'text',
     nullable: true,
   })
-  fullName: string;
+  fullName: string | null;
 
   @Column({
     width: 160,
     type: 'text',
     nullable: true,
   })
-  company: string;
+  company: string | null;
 
   @Column({
     width: 3,
     type: 'tinyint',
     nullable: true,
   })
-  maxReservedStudents: number;
+  maxReservedStudents: number | null;
 }
