@@ -20,4 +20,10 @@ export class AuthController {
   async logout(@UserObj() user: User, @Res() res: Response) {
     return this.authService.logout(user, res);
   }
+
+  @Get('/me')
+  @UseGuards(AuthGuard('jwt'))
+  async showUser(@UserObj() user: User, @Res() res: Response) {
+    return this.authService.checkActiveUser(user, res);
+  }
 }
