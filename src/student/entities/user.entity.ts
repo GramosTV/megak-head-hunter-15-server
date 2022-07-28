@@ -1,4 +1,5 @@
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Score } from 'types';
 import {
   ExpectedContractType,
   ExpectedTypeWork,
@@ -52,19 +53,11 @@ export class User extends BaseEntity {
   })
   githubUsername: string | null;
 
-  @Column({
-    width: 2000,
-    type: 'text',
-    nullable: true,
-  })
-  portfolioUrls: string | null;
+  @Column({ type: 'simple-array', array: true, nullable: true })
+  portfolioUrls: string[] | null;
 
-  @Column({
-    width: 2000,
-    type: 'text',
-    nullable: true,
-  })
-  projectUrls: string | null;
+  @Column({ type: 'simple-array', array: true, nullable: true })
+  projectUrls: string[] | null;
 
   @Column({
     width: 250,
@@ -135,6 +128,37 @@ export class User extends BaseEntity {
     nullable: true,
   })
   courses: string | null;
+
+  @Column({ type: 'simple-array', array: true, nullable: true })
+  courseWork: string[] | null;
+
+  @Column({
+    type: 'enum',
+    enum: Score,
+    nullable: true,
+  })
+  courseScore: Score | null;
+
+  @Column({
+    type: 'enum',
+    enum: Score,
+    nullable: true,
+  })
+  courseEngagementScore: Score | null;
+
+  @Column({
+    type: 'enum',
+    enum: Score,
+    nullable: true,
+  })
+  ownProjectScore: Score | null;
+
+  @Column({
+    type: 'enum',
+    enum: Score,
+    nullable: true,
+  })
+  workInScrumTeamScore: Score | null;
 
   @Column({
     nullable: true,
