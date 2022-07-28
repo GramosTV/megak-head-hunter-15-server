@@ -1,5 +1,17 @@
-import { Role } from '../../src/student/interfaces/user';
+import {
+  ExpectedContractType,
+  ExpectedTypeWork,
+  Role,
+} from '../../src/student/interfaces/user';
 
+export enum Score {
+  zero,
+  one,
+  two,
+  three,
+  four,
+  five,
+}
 export interface AuthUser {
   email: string;
   firstName: string | null;
@@ -8,4 +20,29 @@ export interface AuthUser {
   role: Role;
   ghUsername: string | null;
   maxReservedStudents: number | null;
+}
+
+export interface User {
+  email: string;
+  firstName: string;
+  lastName: string;
+  tel: number;
+  githubUsername: string;
+  portfolioUrls: string[];
+  projectUrls: string[];
+  bio: string;
+  expectedTypeWork: ExpectedTypeWork;
+  targetWorkCity: string;
+  expectedContractType: ExpectedContractType;
+  expectedSalary: number;
+  canTakeApprenticeship: boolean;
+  monthsOfCommercialExp: number;
+  education: string;
+  workExperience: string;
+  courses: string;
+  courseWork: string[];
+  courseScore: Score;
+  courseEngagementScore: Score;
+  ownProjectScore: Score;
+  workInScrumTeamScore: Score;
 }
