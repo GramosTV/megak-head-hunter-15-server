@@ -53,7 +53,7 @@ export class User extends BaseEntity {
   portfolioUrls: string[] | null;
 
   @Column({ type: 'simple-array', array: true, nullable: true })
-  projectUrls: string[] | null;
+  bonusProjectUrls: string[] | null;
 
   @Column({
     width: 250,
@@ -133,28 +133,28 @@ export class User extends BaseEntity {
     enum: Score,
     nullable: true,
   })
-  courseScore: Score | null;
+  courseCompletion: Score | null;
 
   @Column({
     type: 'enum',
     enum: Score,
     nullable: true,
   })
-  courseEngagementScore: Score | null;
+  courseEngagement: Score | null;
 
   @Column({
     type: 'enum',
     enum: Score,
     nullable: true,
   })
-  ownProjectScore: Score | null;
+  projectDegree: Score | null;
 
   @Column({
     type: 'enum',
     enum: Score,
     nullable: true,
   })
-  workInScrumTeamScore: Score | null;
+  teamProjectDegree: Score | null;
 
   @Column({
     nullable: true,

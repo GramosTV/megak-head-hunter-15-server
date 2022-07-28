@@ -40,7 +40,7 @@ export interface User {
   tel: number;
   githubUsername: string;
   portfolioUrls: string[];
-  projectUrls: string[];
+  bonusProjectUrls: string[];
   bio: string;
   expectedTypeWork: ExpectedTypeWork;
   targetWorkCity: string;
@@ -52,8 +52,8 @@ export interface User {
   workExperience: string;
   courses: string;
   courseWork: string[];
-  courseScore: Score;
-  courseEngagementScore: Score;
-  ownProjectScore: Score;
-  workInScrumTeamScore: Score;
+  courseCompletion: Score;
+  courseEngagement: Score;
+  projectDegree: Score;
+  teamProjectDegree: Score;
 }
