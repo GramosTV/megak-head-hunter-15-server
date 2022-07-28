@@ -1,8 +1,19 @@
-import {
-  ExpectedContractType,
-  ExpectedTypeWork,
-  Role,
-} from '../../src/student/interfaces/user';
+import { Role } from '../../src/student/interfaces/user';
+
+export enum ExpectedTypeWork {
+  Local,
+  ReadyToMove,
+  Remote,
+  Hybrid,
+  All,
+}
+
+export enum ExpectedContractType {
+  EmploymentContract,
+  B2B,
+  CommissionContract,
+  NoPreferences,
+}
 
 export enum Score {
   zero,

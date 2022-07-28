@@ -1,10 +1,6 @@
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { Score } from 'types';
-import {
-  ExpectedContractType,
-  ExpectedTypeWork,
-  Role,
-} from '../interfaces/user';
+import { ExpectedContractType, ExpectedTypeWork, Score } from 'types';
+import { Role } from '../interfaces/user';
 
 @Entity()
 export class User extends BaseEntity {
