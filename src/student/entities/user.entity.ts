@@ -49,10 +49,10 @@ export class User extends BaseEntity {
   })
   githubUsername: string | null;
 
-  @Column({ type: 'simple-array', array: true, nullable: true })
+  @Column({ type: 'simple-array', nullable: true })
   portfolioUrls: string[] | null;
 
-  @Column({ type: 'simple-array', array: true, nullable: true })
+  @Column({ type: 'simple-array', nullable: true })
   bonusProjectUrls: string[] | null;
 
   @Column({
@@ -125,7 +125,7 @@ export class User extends BaseEntity {
   })
   courses: string | null;
 
-  @Column({ type: 'simple-array', array: true, nullable: true })
+  @Column({ type: 'simple-array', nullable: true })
   courseWork: string[] | null;
 
   @Column({
