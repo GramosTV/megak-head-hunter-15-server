@@ -187,7 +187,7 @@ export class User extends BaseEntity {
 
   @Column({
     width: 3,
-    type: 'tinyint',
+    type: 'smallint',
     nullable: true,
   })
   maxReservedStudents: number | null;
