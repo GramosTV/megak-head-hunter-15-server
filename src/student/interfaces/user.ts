@@ -1,4 +1,5 @@
 import { BaseEntity } from 'typeorm';
+import { User } from '../../../types';
 
 export enum Role {
   STUDENT = 'student',
@@ -12,4 +13,9 @@ export interface HrInterface extends BaseEntity {
   company: string;
   maxReservedStudents: number;
   role: Role;
+}
+
+export interface GetPaginatedListOfUser {
+  users: User[];
+  pagesCount: number;
 }
