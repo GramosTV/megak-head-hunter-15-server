@@ -26,7 +26,7 @@ export class AdminController {
 
   @Post('/addStudents')
   addStudents(@Body() createStudentsDtos: ArrayOfStudentsDto) {
-    return this.adminService.addStudents(createStudentsDtos);
+    this.adminService.addStudents(createStudentsDtos);
   }
 
   @Get()
