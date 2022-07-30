@@ -7,7 +7,10 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
-import { CreateStudentDto } from 'src/student/dto/create-student.dto';
+import {
+  ArrayOfStudentsDto,
+  CreateStudentDto,
+} from 'src/student/dto/create-student.dto';
 import { AdminService } from './admin.service';
 import { CreateAdminDto } from './dto/create-admin.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
@@ -22,7 +25,7 @@ export class AdminController {
   }
 
   @Post('/addStudents')
-  addStudents(@Body() createStudentsDtos: CreateStudentDto[]) {
+  addStudents(@Body() createStudentsDtos: ArrayOfStudentsDto) {
     return this.adminService.addStudents(createStudentsDtos);
   }
 

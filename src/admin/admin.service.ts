@@ -1,11 +1,15 @@
 import { User } from './../student/entities/user.entity';
 import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { CreateStudentDto } from 'src/student/dto/create-student.dto';
+import {
+  ArrayOfStudentsDto,
+  CreateStudentDto,
+} from 'src/student/dto/create-student.dto';
 import { CreateAdminDto } from './dto/create-admin.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
 import { StudentService } from 'src/student/student.service';
 import { Repository } from 'typeorm';
+import { Score } from '../../types';
 
 @Injectable()
 export class AdminService {
@@ -19,9 +23,16 @@ export class AdminService {
     return 'This action adds a new admin';
   }
 
-  addStudents(createStudentsDtos: CreateStudentDto[]) {
-    createStudentsDtos.map((e) => {
-      User.save(e);
+  async addStudents(createStudentsDtos: ArrayOfStudentsDto) {
+    createStudentsDtos.students.map(async (e: CreateStudentDto) => {
+      const user = new User();
+      user.email = e.email;
+      user.courseCompletion = e.courseCompletion;
+      user.courseEngagement = e.courseEngagement;
+      user.projectDegree = e.projectDegree;
+      user.teamProjectDegree = e.teamProjectDegree;
+      user.bonusProjectUrls = e.bonusProjectUrls;
+      await user.save();
     });
   }
 
