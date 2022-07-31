@@ -1,5 +1,5 @@
 import { User } from './../student/entities/user.entity';
-import { forwardRef, Inject, Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import {
   ArrayOfStudentsDto,
@@ -25,13 +25,10 @@ export class AdminService {
 
   async addStudents(createStudentsDtos: ArrayOfStudentsDto) {
     createStudentsDtos.students.map(async (e: CreateStudentDto) => {
-      if (
-        User.findBy({
-          email: e.email,
-        })
-      )
-        return false;
-
+      const mailCheck = await User.findBy({
+        email: e.email,
+      });
+      if (mailCheck) return false;
       const user = new User();
       user.email = e.email;
       user.courseCompletion = e.courseCompletion;
