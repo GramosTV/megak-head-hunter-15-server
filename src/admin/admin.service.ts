@@ -28,7 +28,7 @@ export class AdminService {
       const mailCheck = await User.findBy({
         email: e.email,
       });
-      if (mailCheck) return false;
+      if (mailCheck.length) return false;
       const user = new User();
       user.email = e.email;
       user.courseCompletion = e.courseCompletion;
