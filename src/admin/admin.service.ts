@@ -25,6 +25,13 @@ export class AdminService {
 
   async addStudents(createStudentsDtos: ArrayOfStudentsDto) {
     createStudentsDtos.students.map(async (e: CreateStudentDto) => {
+      if (
+        User.findBy({
+          email: e.email,
+        })
+      )
+        return false;
+
       const user = new User();
       user.email = e.email;
       user.courseCompletion = e.courseCompletion;
