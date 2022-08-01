@@ -1,5 +1,4 @@
 import {
-  IsArray,
   IsEmail,
   IsInt,
   IsOptional,
@@ -7,12 +6,10 @@ import {
   MaxLength,
   Min,
   MinLength,
-  ValidateNested,
 } from 'class-validator';
-import { ExpectedContractType, ExpectedTypeWork, Score } from 'types';
-import { Type } from 'class-transformer';
+import { Score } from './user';
 
-export class CreateStudentDto {
+export class CreateUserDto {
   @IsEmail()
   @MinLength(3, {
     message: 'Email is too short',
@@ -44,11 +41,4 @@ export class CreateStudentDto {
 
   @IsOptional()
   bonusProjectUrls: string[] | null;
-}
-
-export class ArrayOfStudentsDto {
-  @IsArray()
-  @ValidateNested({ each: true })
-  @Type(() => CreateStudentDto)
-  students: CreateStudentDto[];
 }
