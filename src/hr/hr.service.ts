@@ -17,19 +17,7 @@ export class HrService {
 
   async addHr(newHr: AddHrDto): Promise<AddHrResponse> {
     const { email, fullName, company, maxReservedStudents } = newHr;
-    if (
-      !email ||
-      !fullName ||
-      !company ||
-      typeof maxReservedStudents !== 'number' ||
-      email.trim().length === 0 ||
-      fullName.trim().length === 0 ||
-      company.trim().length === 0 ||
-      !email.includes('@') ||
-      (await this.checkIfEmailIsUnique(email)) ||
-      maxReservedStudents < 1 ||
-      maxReservedStudents > 999
-    ) {
+    if (await this.checkIfEmailIsUnique(email)) {
       return {
         ok: false,
       };
