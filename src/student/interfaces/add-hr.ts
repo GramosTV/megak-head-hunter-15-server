@@ -5,4 +5,6 @@ export interface AddHrSuccessResponse {
   company: string;
 }
 
-export type AddHrResponse = AddHrSuccessResponse | { ok: false };
+export type AddHrResponse =
+  | AddHrSuccessResponse
+  | { ok: false; message: string };

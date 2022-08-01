@@ -20,6 +20,7 @@ export class HrService {
     if (await this.checkIfEmailIsUnique(email)) {
       return {
         ok: false,
+        message: 'Email already exists',
       };
     }
 
