@@ -15,11 +15,28 @@ export class StudentService {
 
     const [users, count] = await User.findAndCount({
       select: {
-        id: true,
+        email: true,
         firstName: true,
         lastName: true,
-        email: true,
+        tel: true,
+        githubUsername: true,
+        portfolioUrls: true,
+        bonusProjectUrls: true,
+        bio: true,
+        expectedTypeWork: true,
+        targetWorkCity: true,
         expectedContractType: true,
+        expectedSalary: true,
+        canTakeApprenticeship: true,
+        monthsOfCommercialExp: true,
+        education: true,
+        workExperience: true,
+        courses: true,
+        courseWork: true,
+        courseCompletion: true,
+        courseEngagement: true,
+        projectDegree: true,
+        teamProjectDegree: true,
       },
       where: {
         role: Role.STUDENT,
@@ -31,7 +48,7 @@ export class StudentService {
     const pagesCount = Math.ceil(count / maxPerPage);
 
     return {
-      users: users,
+      users,
       pagesCount,
     };
   }
