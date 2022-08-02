@@ -3,9 +3,19 @@ import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { User } from './entities/user.entity';
 import { GetPaginatedListOfUser, Role } from './interfaces/user';
-
+import * as bcrypt from 'bcrypt';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 @Injectable()
 export class StudentService {
+  constructor(
+    @InjectRepository(User) private userRepository: Repository<User>,
+  ) {}
+  async changePassword(user: User, password: string) {
+    user.password = await bcrypt.hash(password, 10);
+    await User.save(user);
+  }
+
   create(createStudentDto: CreateStudentDto) {
     return 'This action adds a new student';
   }

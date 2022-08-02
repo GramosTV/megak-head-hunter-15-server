@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { AuthLoginDto } from './dto/auth-login.dto';
 import { Response } from 'express';
-import { hashPwd } from '../utils/hash-pwd';
+import * as bcrypt from 'bcrypt';
 import { v4 as uuid } from 'uuid';
 import { sign } from 'jsonwebtoken';
 import { JwtPayload } from './jwt.strategy';
@@ -40,9 +40,8 @@ export class AuthService {
     try {
       const user = await User.findOneBy({
         email: req.email,
-        password: hashPwd(req.password),
       });
-      if (!user) {
+      if (!user || !(await bcrypt.compare(req.password, user.password))) {
         return res.json({ error: 'Invalid login data' });
       }
       const token = this.createToken(await this.generateToken(user));
