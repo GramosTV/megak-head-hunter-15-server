@@ -27,7 +27,10 @@ export class StudentController {
 
   @Put('/password')
   @UseGuards(AuthGuard('jwt'))
-  async changePassword(@UserObj() user: User, @Body() password: string) {
+  async changePassword(
+    @UserObj() user: User,
+    @Body() { password }: { password: string },
+  ) {
     return await this.studentService.changePassword(user, password);
   }
 

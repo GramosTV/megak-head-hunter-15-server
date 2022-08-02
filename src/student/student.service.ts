@@ -11,8 +11,7 @@ export class StudentService {
     @InjectRepository(User) private userRepository: Repository<User>,
   ) {}
   async changePassword(user: User, password: string) {
-    const pw = await bcrypt.hash(password, 10);
-    user.password = pw;
+    user.password = await bcrypt.hash(password, 10);
     await User.save(user);
   }
 
