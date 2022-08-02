@@ -25,7 +25,7 @@ export class StudentController {
     return this.studentService.create(createStudentDto);
   }
 
-  @Put('/password')
+  @Patch('/password')
   @UseGuards(AuthGuard('jwt'))
   async changePassword(
     @UserObj() user: User,
