@@ -10,7 +10,7 @@ import {
 import { StudentService } from './student.service';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
-import { GetPaginatedListOfUser } from "./interfaces/user";
+import { GetPaginatedListOfUser } from './interfaces/user';
 
 @Controller('student')
 export class StudentController {
@@ -21,11 +21,11 @@ export class StudentController {
     return this.studentService.create(createStudentDto);
   }
 
-  @Get('/:pageNumber')
+  @Get('/:pageNumber?')
   findAll(
-    @Param('pageNumber') pageNumber: string,
+    @Param('pageNumber') pageNumber?: string,
   ): Promise<GetPaginatedListOfUser> {
-    return this.studentService.findAll(Number(pageNumber));
+    return this.studentService.findAll(pageNumber ? Number(pageNumber) : 1);
   }
 
   @Get(':id')
