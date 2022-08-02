@@ -10,12 +10,17 @@ import { UpdateAdminDto } from './dto/update-admin.dto';
 import { StudentService } from 'src/student/student.service';
 import { Repository } from 'typeorm';
 import { Score } from '../../types';
+import { JwtPayload } from 'src/auth/jwt.strategy';
+import { sign } from 'jsonwebtoken';
+import { MailService } from 'src/mail/mail.service';
 
 @Injectable()
 export class AdminService {
   constructor(
     @Inject(forwardRef(() => StudentService))
     private studentService: StudentService,
+    @Inject(MailService)
+    private mailService: MailService,
     @InjectRepository(User) private userRepository: Repository<User>,
   ) {}
 
@@ -37,6 +42,16 @@ export class AdminService {
       user.teamProjectDegree = e.teamProjectDegree;
       user.bonusProjectUrls = e.bonusProjectUrls;
       await user.save();
+      const userId = (await User.findOne({ where: { email: user.email } })).id;
+      const payload: JwtPayload = { id: userId };
+      const expiresIn = 60 * 60 * 24 * 7;
+      const accessToken = sign(payload, process.env.JWT_SECRET, { expiresIn });
+      const url = process.env.URL + `/register/${userId}/${accessToken}`;
+      await this.mailService.sendMail(
+        user.email,
+        'Link do rejestracji do serwisu MegaK Head Hunter',
+        url, // TEMPLATE TODO
+      );
     });
   }
 
