@@ -21,13 +21,13 @@ export class AdminController {
   constructor(private readonly adminService: AdminService) {}
 
   @Post()
-  create(@Body() createAdminDto: CreateAdminDto) {
+  async create(@Body() createAdminDto: CreateAdminDto) {
     return this.adminService.create(createAdminDto);
   }
 
   @Post('/addStudents')
-  addStudents(@Body() createStudentsDtos: ArrayOfStudentsDto) {
-    this.adminService.addStudents(createStudentsDtos);
+  async addStudents(@Body() createStudentsDtos: ArrayOfStudentsDto) {
+    return this.adminService.addStudents(createStudentsDtos);
   }
 
   @Get()

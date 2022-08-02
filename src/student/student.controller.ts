@@ -6,18 +6,32 @@ import {
   Patch,
   Param,
   Delete,
+  Put,
+  UseGuards,
 } from '@nestjs/common';
 import { StudentService } from './student.service';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
+import { AuthGuard } from '@nestjs/passport';
+import { UserObj } from 'src/decorators/user-obj.decorator';
+import { User } from './entities/user.entity';
 
 @Controller('student')
 export class StudentController {
   constructor(private readonly studentService: StudentService) {}
 
   @Post()
-  create(@Body() createStudentDto: CreateStudentDto) {
+  async create(@Body() createStudentDto: CreateStudentDto) {
     return this.studentService.create(createStudentDto);
+  }
+
+  @Patch('/password')
+  @UseGuards(AuthGuard('jwt'))
+  async changePassword(
+    @UserObj() user: User,
+    @Body() { password }: { password: string },
+  ) {
+    return await this.studentService.changePassword(user, password);
   }
 
   @Get()
