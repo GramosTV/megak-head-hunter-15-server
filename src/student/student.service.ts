@@ -10,8 +10,11 @@ export class StudentService {
     return 'This action adds a new student';
   }
 
-  async findAll(currentPage = 1): Promise<GetPaginatedListOfUser> {
-    const maxPerPage = 3; //@ToDo to change to specific number
+  async findAll(
+    perPage: number,
+    currentPage = 1,
+  ): Promise<GetPaginatedListOfUser> {
+    const maxPerPage = perPage;
 
     const [users, count] = await User.findAndCount({
       select: {

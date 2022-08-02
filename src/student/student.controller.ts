@@ -21,11 +21,15 @@ export class StudentController {
     return this.studentService.create(createStudentDto);
   }
 
-  @Get('/:pageNumber?')
+  @Get('/:perPage/:pageNumber?')
   findAll(
+    @Param('perPage') perPage?: string,
     @Param('pageNumber') pageNumber?: string,
   ): Promise<GetPaginatedListOfUser> {
-    return this.studentService.findAll(pageNumber ? Number(pageNumber) : 1);
+    return this.studentService.findAll(
+      Number(perPage),
+      pageNumber ? Number(pageNumber) : 1,
+    );
   }
 
   @Get(':id')
