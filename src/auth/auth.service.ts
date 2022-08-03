@@ -70,7 +70,7 @@ export class AuthService {
         domain: 'localhost',
         httpOnly: true,
       });
-      return res.json({ ok: true });
+      return res.json({ ok: true, message: 'Wylogowano!' });
     } catch (e) {
       return res.json({ error: e.message });
     }
