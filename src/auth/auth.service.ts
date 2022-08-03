@@ -42,7 +42,10 @@ export class AuthService {
         email: req.email,
       });
       if (!user || !(await bcrypt.compare(req.password, user.password))) {
-        return res.json({ error: 'Invalid login data' });
+        return res.json({
+          ok: false,
+          message: 'Nieprawidłowy email lub hasło!',
+        });
       }
       const token = this.createToken(await this.generateToken(user));
 
