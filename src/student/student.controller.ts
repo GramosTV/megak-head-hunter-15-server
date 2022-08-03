@@ -6,7 +6,6 @@ import {
   Patch,
   Param,
   Delete,
-  Put,
   UseGuards,
 } from '@nestjs/common';
 import { StudentService } from './student.service';
@@ -15,6 +14,7 @@ import { UpdateStudentDto } from './dto/update-student.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { UserObj } from 'src/decorators/user-obj.decorator';
 import { User } from './entities/user.entity';
+import { GetPaginatedListOfUser } from '../../types';
 
 @Controller('student')
 export class StudentController {
@@ -25,6 +25,17 @@ export class StudentController {
     return this.studentService.create(createStudentDto);
   }
 
+  @Get('/:perPage/:pageNumber?')
+  findAll(
+    @Param('perPage') perPage?: string,
+    @Param('pageNumber') pageNumber?: string,
+  ): Promise<GetPaginatedListOfUser> {
+    return this.studentService.findAll(
+      Number(perPage),
+      pageNumber ? Number(pageNumber) : 1,
+    );
+  }
+
   @Patch('/password')
   @UseGuards(AuthGuard('jwt'))
   async changePassword(
@@ -32,11 +43,6 @@ export class StudentController {
     @Body() { password }: { password: string },
   ) {
     return await this.studentService.changePassword(user, password);
-  }
-
-  @Get()
-  findAll() {
-    return this.studentService.findAll();
   }
 
   @Get(':id')
