@@ -2,10 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { User } from './entities/user.entity';
-import { GetPaginatedListOfUser, Role } from './interfaces/user';
 import * as bcrypt from 'bcrypt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { GetPaginatedListOfUser } from '../../types';
+import { Role } from './interfaces/user';
 @Injectable()
 export class StudentService {
   constructor(

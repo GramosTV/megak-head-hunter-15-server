@@ -57,3 +57,8 @@ export interface User {
   projectDegree: Score;
   teamProjectDegree: Score;
 }
+
+export interface GetPaginatedListOfUser {
+  users: User[];
+  pagesCount: number;
+}
