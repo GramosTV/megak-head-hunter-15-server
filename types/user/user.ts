@@ -24,6 +24,7 @@ export enum Score {
   five,
 }
 export interface AuthUser {
+  ok: true;
   email: string;
   firstName: string | null;
   lastName: string | null;

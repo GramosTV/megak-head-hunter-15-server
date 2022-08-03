@@ -78,6 +78,7 @@ export class AuthService {
 
   async checkActiveUser(user: User, res: Response) {
     return res.json({
+      ok: true,
       email: user.email,
       firstName: user.firstName,
       lastName: user.lastName,
