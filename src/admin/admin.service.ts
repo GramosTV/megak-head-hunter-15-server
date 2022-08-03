@@ -13,6 +13,7 @@ import { Score } from '../../types';
 import { JwtPayload } from 'src/auth/jwt.strategy';
 import { sign } from 'jsonwebtoken';
 import { MailService } from 'src/mail/mail.service';
+import { registrationMailTemplate } from 'src/templates/email/registration-mail';
 
 @Injectable()
 export class AdminService {
@@ -44,13 +45,13 @@ export class AdminService {
       await user.save();
       const userId = (await User.findOne({ where: { email: user.email } })).id;
       const payload: JwtPayload = { id: userId };
-      const expiresIn = 60 * 60 * 24 * 7;
+      const expiresIn = 60 * 60 * 24 * Number(process.env.REGISTRATION_LINK_EXP_TIME_IN_DAYS);
       const accessToken = sign(payload, process.env.JWT_SECRET, { expiresIn });
       const url = process.env.URL + `/register/${userId}/${accessToken}`;
       await this.mailService.sendMail(
         user.email,
         'Link do rejestracji do serwisu MegaK Head Hunter',
-        url, // TEMPLATE TODO
+        registrationMailTemplate(url),
       );
     });
   }
