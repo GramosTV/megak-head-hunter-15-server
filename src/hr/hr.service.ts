@@ -15,6 +15,19 @@ export class HrService {
     return !!user;
   }
 
+  async checkTheNumberOfActualChosenStudents(id: string): Promise<number> {
+    return await User.count({
+      relations: {
+        hr: true,
+      },
+      where: {
+        hr: {
+          id,
+        },
+      },
+    });
+  }
+
   async addHr(newHr: AddHrDto): Promise<AddHrResponse> {
     const { email, fullName, company, maxReservedStudents } = newHr;
     if (await this.checkIfEmailIsUnique(email)) {
@@ -56,6 +69,14 @@ export class HrService {
       };
     if (studentToAdd.status !== Status.AVAILABLE)
       return { ok: false, message: 'Kursant nie jest dostępny do rozmowy!' };
+    if (
+      hr.maxReservedStudents ===
+      (await this.checkTheNumberOfActualChosenStudents(hr.id))
+    )
+      return {
+        ok: false,
+        message: `Nie możesz wybrać do rozmowy więcej niż ${hr.maxReservedStudents} kursantów jednocześnie!`,
+      };
     studentToAdd.hr = hr;
     studentToAdd.status = Status.RESERVED;
     studentToAdd.reservedTo = new Date(
