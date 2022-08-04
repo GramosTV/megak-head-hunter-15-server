@@ -1,3 +1,4 @@
+import { FilterSettings } from 'types';
 import { Injectable } from '@nestjs/common';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
@@ -65,6 +66,10 @@ export class StudentService {
       users,
       pagesCount,
     };
+  }
+
+  async getFilteredStudents(filterSettings: FilterSettings) {
+    return '';
   }
 
   findOne(id: string) {
