@@ -1,4 +1,11 @@
-import { Controller, Post, Body, UseGuards, Patch } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  UseGuards,
+  Patch,
+  Delete,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
 import { HrService } from './hr.service';
@@ -25,5 +32,12 @@ export class HrController {
   @Patch()
   addStudent(@UserObj() hr: User, @Body() student: { email: string }) {
     return this.hrService.addStudent(student.email, hr);
+  }
+
+  @Roles(Role.HR)
+  @UseGuards(AuthGuard('jwt'), RoleGuard)
+  @Delete()
+  removeStudent(@UserObj() hr: User, @Body() student: { email: string }) {
+    return this.hrService.removeStudent(student.email, hr);
   }
 }
