@@ -103,7 +103,7 @@ export class HrService {
         ok: false,
         message: 'Konto o wybranym adresie e-mail nie istnieje!',
       };
-    if (studentToRemove.hr.id !== hr.id)
+    if (!studentToRemove.hr || studentToRemove.hr.id !== hr.id)
       return {
         ok: false,
         message: 'Ten kursant nie został przez Ciebie dodany do rozmowy!',
