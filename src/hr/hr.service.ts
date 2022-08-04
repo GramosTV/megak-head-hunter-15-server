@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { AddHrDto } from './dto/add-hr.dto';
 import { AddHrResponse } from '../student/interfaces/add-hr';
 import { User } from 'src/student/entities/user.entity';
-import { HrInterface, Role } from '../student/interfaces/user';
+import { HrInterface, Role, Status } from '../student/interfaces/user';
 
 @Injectable()
 export class HrService {
@@ -40,6 +40,31 @@ export class HrService {
       email: hr.email,
       company: hr.company,
       fullName: hr.fullName,
+    };
+  }
+
+  async addStudent(studentEmail: string, hr: User) {
+    const studentToAdd = await User.findOne({
+      where: {
+        email: studentEmail,
+      },
+    });
+    if (!studentToAdd)
+      return {
+        ok: false,
+        message: 'Konto o wybranym adresie e-mail nie istnieje!',
+      };
+    if (studentToAdd.status !== Status.AVAILABLE)
+      return { ok: false, message: 'Kursant nie jest dostępny do rozmowy!' };
+    studentToAdd.hr = hr;
+    studentToAdd.status = Status.RESERVED;
+    studentToAdd.reservedTo = new Date(
+      new Date().getTime() + 10 * 24 * 60 * 60 * 1000,
+    );
+    await studentToAdd.save();
+    return {
+      ok: true,
+      message: `Dodano kursanta do rozmowy!`,
     };
   }
 }
