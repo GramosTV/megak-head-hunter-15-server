@@ -214,7 +214,7 @@ export class User extends BaseEntity {
   maxReservedStudents: number | null;
 
   //hr - student relation
-  @ManyToOne((type) => User, (user) => user.students, { eager: true })
+  @ManyToOne((type) => User, (user) => user.students)
   hr: User;
 
   @OneToMany((type) => User, (user) => user.hr)
