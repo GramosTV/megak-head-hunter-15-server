@@ -88,4 +88,33 @@ export class HrService {
       message: `Dodano kursanta do rozmowy!`,
     };
   }
+
+  async removeStudent(studentEmail: string, hr: User) {
+    const studentToRemove = await User.findOne({
+      relations: {
+        hr: true,
+      },
+      where: {
+        email: studentEmail,
+      },
+    });
+    if (!studentToRemove)
+      return {
+        ok: false,
+        message: 'Konto o wybranym adresie e-mail nie istnieje!',
+      };
+    if (studentToRemove.hr.id !== hr.id)
+      return {
+        ok: false,
+        message: 'Ten kursant nie został przez Ciebie dodany do rozmowy!',
+      };
+    studentToRemove.hr = null;
+    studentToRemove.status = Status.AVAILABLE;
+    studentToRemove.reservedTo = null;
+    await studentToRemove.save();
+    return {
+      ok: true,
+      message: `Usunięto kursanta z listy do rozmowy!`,
+    };
+  }
 }
