@@ -28,7 +28,11 @@ export class StudentService {
     const maxPerPage = perPage;
 
     const [users, count] = await User.findAndCount({
+      relations: {
+        hr: true,
+      },
       select: {
+        id: true,
         email: true,
         firstName: true,
         lastName: true,
@@ -51,6 +55,10 @@ export class StudentService {
         courseEngagement: true,
         projectDegree: true,
         teamProjectDegree: true,
+        hr: {
+          email: true,
+        },
+        status: true,
       },
       where: {
         role: Role.STUDENT,
