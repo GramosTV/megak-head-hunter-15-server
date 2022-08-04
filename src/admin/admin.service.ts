@@ -24,20 +24,33 @@ export class AdminService {
   }
 
   async addStudents(createStudentsDtos: ArrayOfStudentsDto) {
-    createStudentsDtos.students.map(async (e: CreateStudentDto) => {
-      const mailCheck = await User.findBy({
-        email: e.email,
-      });
-      if (mailCheck.length) return false;
-      const user = new User();
-      user.email = e.email;
-      user.courseCompletion = e.courseCompletion;
-      user.courseEngagement = e.courseEngagement;
-      user.projectDegree = e.projectDegree;
-      user.teamProjectDegree = e.teamProjectDegree;
-      user.bonusProjectUrls = e.bonusProjectUrls;
-      await user.save();
-    });
+    const message = [];
+    await Promise.all(
+      createStudentsDtos.students.map(async (e: CreateStudentDto) => {
+        const mailCheck = await User.findBy({
+          email: e.email,
+        });
+        if (mailCheck.length) {
+          message.push(
+            `Konto zarejestrowane na adres e-mail: ${mailCheck[0].email} już istnieje!`,
+          );
+          return;
+        }
+        const user = new User();
+        user.email = e.email;
+        user.courseCompletion = e.courseCompletion;
+        user.courseEngagement = e.courseEngagement;
+        user.projectDegree = e.projectDegree;
+        user.teamProjectDegree = e.teamProjectDegree;
+        user.bonusProjectUrls = e.bonusProjectUrls;
+        await user.save();
+        message.push(`Pomyślnie zarejestrowano konto: ${e.email}`);
+      }),
+    );
+    return {
+      ok: true,
+      message,
+    };
   }
 
   findAll() {

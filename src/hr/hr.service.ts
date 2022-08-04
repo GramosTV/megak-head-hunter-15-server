@@ -20,7 +20,7 @@ export class HrService {
     if (await this.checkIfEmailIsUnique(email)) {
       return {
         ok: false,
-        message: 'Email already exists',
+        message: 'Konto o podanym adresie email już istnieje!',
       };
     }
 
@@ -36,6 +36,7 @@ export class HrService {
 
     return {
       ok: true,
+      message: 'Konto HR zostało utworzone!',
       email: hr.email,
       company: hr.company,
       fullName: hr.fullName,
