@@ -1,18 +1,18 @@
 import { Role } from '../../src/student/interfaces/user';
 
 export enum ExpectedTypeWork {
-  Local,
-  ReadyToMove,
-  Remote,
-  Hybrid,
-  All,
+  Local = 'Biuro',
+  ReadyToMove = 'Gotowy do przeprowadzki',
+  Remote = 'Zdalna',
+  Hybrid = 'Biuro i zdalna',
+  All = 'Dowolone',
 }
 
 export enum ExpectedContractType {
-  EmploymentContract,
-  B2B,
-  CommissionContract,
-  NoPreferences,
+  EmploymentContract = 'Umowa o pracę',
+  B2B = 'B2B',
+  CommissionContract = 'Zlecenie',
+  NoPreferences = 'Umowa o dzieło',
 }
 
 export enum Score {

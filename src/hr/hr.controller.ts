@@ -1,4 +1,9 @@
-import { FilterSettings, Score } from 'types';
+import {
+  ExpectedContractType,
+  ExpectedTypeWork,
+  FilterSettings,
+  Score,
+} from 'types';
 import {
   Controller,
   Post,
@@ -19,6 +24,9 @@ import { RoleGuard } from '../auth/role.guard';
 import { StudentService } from 'src/student/student.service';
 import { ParseScorePipe } from 'src/pipes/parse-score.pipe';
 import { ParseFilterIntPipe } from 'src/pipes/parse-filterInt.pipe';
+import { ParseFilterBooleanPipe } from 'src/pipes/parse-filterBoolean.pipe';
+import { ParseExpectedContractTypePipe } from 'src/pipes/parse-expectedContractType.pipe';
+import { ParseExpectedTypeWorkPipe } from 'src/pipes/parse-expectedTypeWork.pipe';
 
 @Controller('hr')
 export class HrController {
@@ -44,8 +52,14 @@ export class HrController {
     @Param('courseEngagement', ParseScorePipe) courseEngagement: Score | null,
     @Param('projectDegree', ParseScorePipe) projectDegree: Score | null,
     @Param('teamProjectDegree', ParseScorePipe) teamProjectDegree: Score | null,
+    @Param('ExpectedTypeWork', ParseExpectedTypeWorkPipe)
+    expectedTypeWork: ExpectedTypeWork | null,
+    @Param('ExpectedContractType', ParseExpectedContractTypePipe)
+    expectedContractType: ExpectedContractType | null,
     @Param('minNetSalary', ParseFilterIntPipe) minNetSalary: number | null,
     @Param('maxNetSalary', ParseFilterIntPipe) maxNetSalary: number | null,
+    @Param('canTakeApprenticeship', ParseFilterBooleanPipe)
+    canTakeApprenticeship: boolean | null,
     @Param('monthsOfCommercialExp', ParseFilterIntPipe)
     monthsOfCommercialExp: number | null,
   ) {
@@ -54,10 +68,12 @@ export class HrController {
       courseEngagement,
       projectDegree,
       teamProjectDegree,
+      expectedTypeWork,
+      expectedContractType,
       minNetSalary,
       maxNetSalary,
+      canTakeApprenticeship,
       monthsOfCommercialExp,
-
     };
     return await this.studentService.getFilteredStudents(filterSettings);
   }
