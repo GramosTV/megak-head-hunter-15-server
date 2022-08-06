@@ -62,6 +62,7 @@ export interface User {
     email: string;
   };
   status: Status;
+  reservedTo: Date;
 }
 
 export interface GetPaginatedListOfUser {
