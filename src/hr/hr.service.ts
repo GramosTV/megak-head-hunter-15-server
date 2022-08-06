@@ -115,6 +115,8 @@ export class HrService {
         ok: false,
         message: 'Ten kursant nie został przez Ciebie dodany do rozmowy!',
       };
+    if (studentToRemove.status === Status.HIRED)
+      return { ok: false, message: 'Ten kursant jest już zatrudniony!' };
     studentToRemove.hr = null;
     studentToRemove.status = Status.AVAILABLE;
     studentToRemove.reservedTo = null;
