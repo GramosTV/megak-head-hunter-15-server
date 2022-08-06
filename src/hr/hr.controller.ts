@@ -29,14 +29,14 @@ export class HrController {
 
   @Roles(Role.HR)
   @UseGuards(AuthGuard('jwt'), RoleGuard)
-  @Patch()
+  @Patch('add-student')
   addStudent(@UserObj() hr: User, @Body() student: { email: string }) {
     return this.hrService.addStudent(student.email, hr);
   }
 
   @Roles(Role.HR)
   @UseGuards(AuthGuard('jwt'), RoleGuard)
-  @Delete()
+  @Patch('remove-student')
   removeStudent(@UserObj() hr: User, @Body() student: { email: string }) {
     return this.hrService.removeStudent(student.email, hr);
   }
