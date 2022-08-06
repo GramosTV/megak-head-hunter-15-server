@@ -40,4 +40,11 @@ export class HrController {
   removeStudent(@UserObj() hr: User, @Body() student: { email: string }) {
     return this.hrService.removeStudent(student.email, hr);
   }
+
+  @Roles(Role.HR)
+  @UseGuards(AuthGuard('jwt'), RoleGuard)
+  @Patch('hire-student')
+  hireStudent(@UserObj() hr: User, @Body() student: { email: string }) {
+    return this.hrService.hireStudent(student.email, hr);
+  }
 }
