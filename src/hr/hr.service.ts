@@ -117,4 +117,40 @@ export class HrService {
       message: `Usunięto kursanta z listy do rozmowy!`,
     };
   }
+
+  async hireStudent(studentEmail: string, hr: User) {
+    const studentToHire = await User.findOne({
+      relations: {
+        hr: true,
+      },
+      where: {
+        email: studentEmail,
+      },
+    });
+    if (!studentToHire)
+      return {
+        ok: false,
+        message: 'Konto o wybranym adresie e-mail nie istnieje!',
+      };
+    if (studentToHire.status === Status.HIRED)
+      return { ok: false, message: 'Kursant jest już zatrudniony!' };
+    if (studentToHire.status === Status.AVAILABLE)
+      return {
+        ok: false,
+        message: 'Musisz najpierw dodać kursanta do rozmowy żeby go zatrudnić!',
+      };
+    if (studentToHire.hr.id !== hr.id)
+      return {
+        ok: false,
+        message:
+          'Ten kursant został dodany do rozmowy przez inny HR! Nie możesz teraz go zatrudnić!',
+      };
+    studentToHire.status = Status.HIRED;
+    studentToHire.reservedTo = null;
+    await studentToHire.save();
+    return {
+      ok: true,
+      message: `Zatrudniono kursanta!`,
+    };
+  }
 }
