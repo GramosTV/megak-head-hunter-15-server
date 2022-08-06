@@ -59,6 +59,7 @@ export class StudentService {
           email: true,
         },
         status: true,
+        reservedTo: true,
       },
       where: {
         role: Role.STUDENT,
