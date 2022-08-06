@@ -1,3 +1,4 @@
+import { Role } from './interfaces/user';
 import {
   Controller,
   Get,
@@ -14,7 +15,8 @@ import { UpdateStudentDto } from './dto/update-student.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { UserObj } from 'src/decorators/user-obj.decorator';
 import { User } from './entities/user.entity';
-import { GetPaginatedListOfUser } from '../../types';
+import { EditProfileDto, GetPaginatedListOfUser } from 'types';
+import { Roles } from 'src/decorators/roles.decorator';
 
 @Controller('student')
 export class StudentController {
@@ -36,13 +38,23 @@ export class StudentController {
     );
   }
 
-  @Patch('/password')
   @UseGuards(AuthGuard('jwt'))
+  @Patch('/password')
   async changePassword(
     @UserObj() user: User,
     @Body() { password }: { password: string },
   ) {
     return await this.studentService.changePassword(user, password);
+  }
+
+  @Roles(Role.STUDENT)
+  @UseGuards(AuthGuard('jwt'))
+  @Patch('/profile')
+  async editProfile(
+    @UserObj() user: User,
+    @Body() editProfileDto: EditProfileDto,
+  ) {
+    return await this.studentService.editProfile(user, editProfileDto);
   }
 
   @Get(':id')

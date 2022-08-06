@@ -5,7 +5,7 @@ import { User } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { GetPaginatedListOfUser } from '../../types';
+import { EditProfileDto, GetPaginatedListOfUser } from 'types';
 import { Role } from './interfaces/user';
 @Injectable()
 export class StudentService {
@@ -65,6 +65,10 @@ export class StudentService {
       users,
       pagesCount,
     };
+  }
+
+  async editProfile(user: User, editProfileDto: EditProfileDto) {
+    return await User.update({ id: user.id }, editProfileDto);
   }
 
   findOne(id: string) {
