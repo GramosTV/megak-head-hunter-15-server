@@ -1,11 +1,18 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { AddHrDto } from './dto/add-hr.dto';
 import { AddHrResponse } from '../student/interfaces/add-hr';
 import { User } from 'src/student/entities/user.entity';
 import { HrInterface, Role, Status } from '../student/interfaces/user';
+import { MailService } from '../mail/mail.service';
+import { hireInformationMailTemplate } from '../templates/email/student-hired-info-mail';
 
 @Injectable()
 export class HrService {
+  constructor(
+    @Inject(MailService)
+    private mailService: MailService,
+  ) {}
+
   async checkIfEmailIsUnique(email: string): Promise<boolean> {
     const user = await User.findOne({
       where: {
@@ -148,6 +155,19 @@ export class HrService {
     studentToHire.status = Status.HIRED;
     studentToHire.reservedTo = null;
     await studentToHire.save();
+    const admin = await User.findOne({
+      select: {
+        email: true,
+      },
+      where: {
+        role: Role.ADMIN,
+      },
+    });
+    await this.mailService.sendMail(
+      admin.email,
+      'Kursant został zatrudniony!',
+      hireInformationMailTemplate(hr, studentToHire),
+    );
     return {
       ok: true,
       message: `Zatrudniono kursanta!`,
