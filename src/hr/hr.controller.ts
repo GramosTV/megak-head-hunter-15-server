@@ -3,22 +3,25 @@ import {
   Post,
   Body,
   UseGuards,
+  Inject,
   Patch,
-  Delete,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-
 import { HrService } from './hr.service';
 import { AddHrDto } from './dto/add-hr.dto';
 import { Roles } from '../decorators/roles.decorator';
 import { Role } from '../student/interfaces/user';
 import { RoleGuard } from '../auth/role.guard';
+import { StudentService } from 'src/student/student.service';
 import { UserObj } from '../decorators/user-obj.decorator';
 import { User } from '../student/entities/user.entity';
 
 @Controller('hr')
 export class HrController {
-  constructor(private readonly hrService: HrService) {}
+  constructor(
+    private readonly hrService: HrService,
+    @Inject(StudentService) private readonly studentService: StudentService,
+  ) {}
 
   @Roles(Role.ADMIN)
   @UseGuards(AuthGuard('jwt'), RoleGuard)
