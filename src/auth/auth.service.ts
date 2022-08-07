@@ -42,7 +42,10 @@ export class AuthService {
         email: req.email,
       });
       if (!user || !(await bcrypt.compare(req.password, user.password))) {
-        return res.json({ error: 'Invalid login data' });
+        return res.json({
+          ok: false,
+          message: 'Nieprawidłowy email lub hasło!',
+        });
       }
       const token = this.createToken(await this.generateToken(user));
 
@@ -67,7 +70,7 @@ export class AuthService {
         domain: 'localhost',
         httpOnly: true,
       });
-      return res.json({ ok: true });
+      return res.json({ ok: true, message: 'Wylogowano!' });
     } catch (e) {
       return res.json({ error: e.message });
     }
@@ -75,6 +78,7 @@ export class AuthService {
 
   async checkActiveUser(user: User, res: Response) {
     return res.json({
+      ok: true,
       email: user.email,
       firstName: user.firstName,
       lastName: user.lastName,

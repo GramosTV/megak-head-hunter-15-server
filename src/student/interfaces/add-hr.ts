@@ -1,5 +1,6 @@
 export interface AddHrSuccessResponse {
   ok: true;
+  message: string;
   email: string;
   fullName: string;
   company: string;

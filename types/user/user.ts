@@ -1,18 +1,18 @@
-import { Role } from '../../src/student/interfaces/user';
+import { Role, Status } from '../../src/student/interfaces/user';
 
 export enum ExpectedTypeWork {
-  Local,
-  ReadyToMove,
-  Remote,
-  Hybrid,
-  All,
+  Local = 'Biuro',
+  ReadyToMove = 'Gotowy do przeprowadzki',
+  Remote = 'Zdalna',
+  Hybrid = 'Biuro i zdalna',
+  All = 'Dowolone',
 }
 
 export enum ExpectedContractType {
-  EmploymentContract,
-  B2B,
-  CommissionContract,
-  NoPreferences,
+  EmploymentContract = 'Umowa o pracę',
+  B2B = 'B2B',
+  CommissionContract = 'Zlecenie',
+  NoPreferences = 'Umowa o dzieło',
 }
 
 export enum Score {
@@ -24,6 +24,7 @@ export enum Score {
   five,
 }
 export interface AuthUser {
+  ok: true;
   email: string;
   firstName: string | null;
   lastName: string | null;
@@ -34,6 +35,7 @@ export interface AuthUser {
 }
 
 export interface User {
+  id: string;
   email: string;
   firstName: string;
   lastName: string;
@@ -56,4 +58,14 @@ export interface User {
   courseEngagement: Score;
   projectDegree: Score;
   teamProjectDegree: Score;
+  hr: {
+    email: string;
+  };
+  status: Status;
+  reservedTo: Date;
+}
+
+export interface GetPaginatedListOfUser {
+  users: User[];
+  pagesCount: number;
 }
