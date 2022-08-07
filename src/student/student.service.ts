@@ -6,8 +6,8 @@ import { User } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Between, Like, MoreThanOrEqual, Repository } from 'typeorm';
-import { GetPaginatedListOfUser } from '../../types';
-import { Role, Status } from './interfaces/user';
+import { GetPaginatedListOfUser, Status } from 'types';
+import { Role } from './interfaces/user';
 @Injectable()
 export class StudentService {
   constructor(

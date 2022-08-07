@@ -18,6 +18,7 @@ import {
   FilterSettings,
   GetPaginatedListOfUser,
   Score,
+  Status,
 } from 'types';
 import { ParseFilterIntPipe } from 'src/pipes/parse-filterInt.pipe';
 import { ParseFilterBooleanPipe } from 'src/pipes/parse-filterBoolean.pipe';
@@ -26,7 +27,7 @@ import { ParseExpectedTypeWorkPipe } from 'src/pipes/parse-expectedTypeWork.pipe
 import { ParseScorePipe } from 'src/pipes/parse-score.pipe';
 import { RoleGuard } from 'src/auth/role.guard';
 import { Roles } from 'src/decorators/roles.decorator';
-import { Role, Status } from './interfaces/user';
+import { Role } from './interfaces/user';
 import { ParseStatusPipe } from 'src/pipes/parse-status.pipe';
 
 @Controller('student')

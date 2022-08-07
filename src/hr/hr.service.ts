@@ -2,9 +2,10 @@ import { Inject, Injectable } from '@nestjs/common';
 import { AddHrDto } from './dto/add-hr.dto';
 import { AddHrResponse } from '../student/interfaces/add-hr';
 import { User } from 'src/student/entities/user.entity';
-import { HrInterface, Role, Status } from '../student/interfaces/user';
+import { HrInterface, Role } from '../student/interfaces/user';
 import { MailService } from '../mail/mail.service';
 import { hireInformationMailTemplate } from '../templates/email/student-hired-info-mail';
+import { Status } from 'types';
 
 @Injectable()
 export class HrService {

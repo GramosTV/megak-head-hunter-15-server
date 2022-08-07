@@ -1,4 +1,4 @@
-import { Role, Status } from '../../src/student/interfaces/user';
+import { Role } from '../../src/student/interfaces/user';
 
 export enum ExpectedTypeWork {
   Local = 'Biuro',
@@ -13,6 +13,12 @@ export enum ExpectedContractType {
   B2B = 'B2B',
   CommissionContract = 'Zlecenie',
   NoPreferences = 'Umowa o dzieło',
+}
+
+export enum Status {
+  AVAILABLE = 'available',
+  RESERVED = 'reserved',
+  HIRED = 'hired',
 }
 
 export enum Score {

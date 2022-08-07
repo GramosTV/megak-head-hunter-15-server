@@ -1,4 +1,4 @@
-import { Status } from './../student/interfaces/user';
+import { Status } from 'types';
 import {
   PipeTransform,
   Injectable,

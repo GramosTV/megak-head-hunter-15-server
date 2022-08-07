@@ -6,8 +6,8 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { ExpectedContractType, ExpectedTypeWork, Score } from 'types';
-import { Role, Status } from '../interfaces/user';
+import { ExpectedContractType, ExpectedTypeWork, Score, Status } from 'types';
+import { Role } from '../interfaces/user';
 
 @Entity()
 export class User extends BaseEntity {
