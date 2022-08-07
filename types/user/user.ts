@@ -1,4 +1,4 @@
-import { Role } from '../../src/student/interfaces/user';
+import { Role, Status } from '../../src/student/interfaces/user';
 
 export enum ExpectedTypeWork {
   Local,
@@ -35,6 +35,7 @@ export interface AuthUser {
 }
 
 export interface User {
+  id: string;
   email: string;
   firstName: string;
   lastName: string;
@@ -57,6 +58,11 @@ export interface User {
   courseEngagement: Score;
   projectDegree: Score;
   teamProjectDegree: Score;
+  hr: {
+    email: string;
+  };
+  status: Status;
+  reservedTo: Date;
 }
 
 export interface GetPaginatedListOfUser {
