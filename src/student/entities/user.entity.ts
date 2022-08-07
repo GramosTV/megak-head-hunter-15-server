@@ -1,6 +1,13 @@
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { ExpectedContractType, ExpectedTypeWork, Score } from 'types';
-import { Role } from '../interfaces/user';
+import { Role, Status } from '../interfaces/user';
 
 @Entity()
 export class User extends BaseEntity {
@@ -169,6 +176,20 @@ export class User extends BaseEntity {
   })
   role: Role;
 
+  @Column({
+    type: 'enum',
+    enum: Status,
+    nullable: false,
+    default: Status.AVAILABLE,
+  })
+  status: Status;
+
+  @Column({
+    type: 'date',
+    nullable: true,
+  })
+  reservedTo: Date | null;
+
   //HR-only fields
 
   @Column({
@@ -191,4 +212,11 @@ export class User extends BaseEntity {
     nullable: true,
   })
   maxReservedStudents: number | null;
+
+  //hr - student relation
+  @ManyToOne((type) => User, (user) => user.students)
+  hr: User;
+
+  @OneToMany((type) => User, (user) => user.hr)
+  students: User[];
 }

@@ -6,6 +6,12 @@ export enum Role {
   ADMIN = 'admin',
 }
 
+export enum Status {
+  AVAILABLE = 'available',
+  RESERVED = 'reserved',
+  HIRED = 'hired',
+}
+
 export interface HrInterface extends BaseEntity {
   email: string;
   fullName: string;
