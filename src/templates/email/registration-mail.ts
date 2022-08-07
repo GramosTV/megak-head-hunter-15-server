@@ -1,4 +1,4 @@
-import striptags from 'striptags';
+import * as striptags from 'striptags';
 
 export function registrationMailTemplate(url: string) {
   return `
