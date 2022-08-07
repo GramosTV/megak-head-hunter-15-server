@@ -11,10 +11,8 @@ import {
   UseGuards,
   Get,
   Inject,
-  ParseIntPipe,
   Param,
   Patch,
-  Delete,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { HrService } from './hr.service';
@@ -30,7 +28,6 @@ import { ParseExpectedContractTypePipe } from 'src/pipes/parse-expectedContractT
 import { ParseExpectedTypeWorkPipe } from 'src/pipes/parse-expectedTypeWork.pipe';
 import { UserObj } from '../decorators/user-obj.decorator';
 import { User } from '../student/entities/user.entity';
-
 
 @Controller('hr')
 export class HrController {
@@ -80,6 +77,7 @@ export class HrController {
       monthsOfCommercialExp,
     };
     return await this.studentService.getFilteredStudents(filterSettings);
+  }
 
   @Roles(Role.HR)
   @UseGuards(AuthGuard('jwt'), RoleGuard)
