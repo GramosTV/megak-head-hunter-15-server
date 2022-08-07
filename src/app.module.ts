@@ -8,6 +8,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MailModule } from './mail/mail.module';
 import { AuthModule } from './auth/auth.module';
+import { CronModule } from './cron/cron.module';
 import dbConfiguration from './config/db.config';
 @Module({
   imports: [
@@ -26,6 +27,7 @@ import dbConfiguration from './config/db.config';
     HrModule,
     MailModule,
     AuthModule,
+    CronModule,
   ],
   controllers: [AppController],
   providers: [AppService],
