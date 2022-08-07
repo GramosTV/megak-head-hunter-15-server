@@ -26,7 +26,8 @@ import { ParseExpectedTypeWorkPipe } from 'src/pipes/parse-expectedTypeWork.pipe
 import { ParseScorePipe } from 'src/pipes/parse-score.pipe';
 import { RoleGuard } from 'src/auth/role.guard';
 import { Roles } from 'src/decorators/roles.decorator';
-import { Role } from './interfaces/user';
+import { Role, Status } from './interfaces/user';
+import { ParseStatusPipe } from 'src/pipes/parse-status.pipe';
 
 @Controller('student')
 export class StudentController {
@@ -60,9 +61,10 @@ export class StudentController {
   @Roles(Role.HR)
   @UseGuards(AuthGuard('jwt'), RoleGuard)
   @Get(
-    '/filtered/:courseCompletion/:courseEngagement/:projectDegree/:teamProjectDegree/:expectedTypeWork/:expectedContractType/:minNetSalary/:maxNetSalary/:canTakeApprenticeship/:monthsOfCommercialExp',
+    '/filtered/:status/:courseCompletion/:courseEngagement/:projectDegree/:teamProjectDegree/:expectedTypeWork/:expectedContractType/:minNetSalary/:maxNetSalary/:canTakeApprenticeship/:monthsOfCommercialExp',
   )
   async getFilteredStudents(
+    @Param('status', ParseStatusPipe) status: Status,
     @Param('courseCompletion', ParseScorePipe) courseCompletion: Score | null,
     @Param('courseEngagement', ParseScorePipe) courseEngagement: Score | null,
     @Param('projectDegree', ParseScorePipe) projectDegree: Score | null,
@@ -90,6 +92,9 @@ export class StudentController {
       canTakeApprenticeship,
       monthsOfCommercialExp,
     };
-    return await this.studentService.getFilteredStudents(filterSettings);
+    return await this.studentService.getFilteredStudents(
+      filterSettings,
+      status,
+    );
   }
 }

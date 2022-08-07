@@ -7,7 +7,7 @@ import * as bcrypt from 'bcrypt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Between, Like, MoreThanOrEqual, Repository } from 'typeorm';
 import { GetPaginatedListOfUser } from '../../types';
-import { Role } from './interfaces/user';
+import { Role, Status } from './interfaces/user';
 @Injectable()
 export class StudentService {
   constructor(
@@ -77,7 +77,7 @@ export class StudentService {
     };
   }
 
-  async getFilteredStudents(filterSettings: FilterSettings) {
+  async getFilteredStudents(filterSettings: FilterSettings, status: Status) {
     const {
       courseCompletion,
       courseEngagement,
@@ -93,6 +93,7 @@ export class StudentService {
     const results = await User.find({
       where: [
         {
+          status,
           courseCompletion: courseCompletion || MoreThanOrEqual(0),
           courseEngagement: courseEngagement || MoreThanOrEqual(0),
           projectDegree: projectDegree || MoreThanOrEqual(0),
@@ -104,6 +105,7 @@ export class StudentService {
           monthsOfCommercialExp: monthsOfCommercialExp || MoreThanOrEqual(0),
         },
         {
+          status,
           courseCompletion: courseCompletion || MoreThanOrEqual(0),
           courseEngagement: courseEngagement || MoreThanOrEqual(0),
           projectDegree: projectDegree || MoreThanOrEqual(0),
