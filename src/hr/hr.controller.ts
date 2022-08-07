@@ -46,7 +46,7 @@ export class HrController {
   @Roles(Role.HR)
   @UseGuards(AuthGuard('jwt'), RoleGuard)
   @Get(
-    '/filteredStudents/:courseCompletion/:courseEngagement/:projectDegree/:teamProjectDegree/:expectedTypeWork/:expectedContractType/:minNetSalary/:maxNetSalary/:canTakeApprenticeship/:monthsOfCommercialExperience',
+    '/filtered/:courseCompletion/:courseEngagement/:projectDegree/:teamProjectDegree/:expectedTypeWork/:expectedContractType/:minNetSalary/:maxNetSalary/:canTakeApprenticeship/:monthsOfCommercialExp',
   )
   async getFilteredStudents(
     @Param('courseCompletion', ParseScorePipe) courseCompletion: Score | null,
