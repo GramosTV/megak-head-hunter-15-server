@@ -62,17 +62,19 @@ export class StudentController {
   @Roles(Role.HR)
   @UseGuards(AuthGuard('jwt'), RoleGuard)
   @Get(
-    '/filtered/:status/:courseCompletion/:courseEngagement/:projectDegree/:teamProjectDegree/:expectedTypeWork/:expectedContractType/:minNetSalary/:maxNetSalary/:canTakeApprenticeship/:monthsOfCommercialExp',
+    '/filtered/:perPage/:pageNumber/:status/:courseCompletion/:courseEngagement/:projectDegree/:teamProjectDegree/:expectedTypeWork/:expectedContractType/:minNetSalary/:maxNetSalary/:canTakeApprenticeship/:monthsOfCommercialExp',
   )
   async getFilteredStudents(
+    @Param('perPage', ParseFilterIntPipe) perPage: number | null,
+    @Param('pageNumber', ParseFilterIntPipe) pageNumber: number | null,
     @Param('status', ParseStatusPipe) status: Status,
     @Param('courseCompletion', ParseScorePipe) courseCompletion: Score | null,
     @Param('courseEngagement', ParseScorePipe) courseEngagement: Score | null,
     @Param('projectDegree', ParseScorePipe) projectDegree: Score | null,
     @Param('teamProjectDegree', ParseScorePipe) teamProjectDegree: Score | null,
-    @Param('ExpectedTypeWork', ParseExpectedTypeWorkPipe)
+    @Param('expectedTypeWork', ParseExpectedTypeWorkPipe)
     expectedTypeWork: ExpectedTypeWork | null,
-    @Param('ExpectedContractType', ParseExpectedContractTypePipe)
+    @Param('expectedContractType', ParseExpectedContractTypePipe)
     expectedContractType: ExpectedContractType | null,
     @Param('minNetSalary', ParseFilterIntPipe) minNetSalary: number | null,
     @Param('maxNetSalary', ParseFilterIntPipe) maxNetSalary: number | null,
@@ -80,7 +82,7 @@ export class StudentController {
     canTakeApprenticeship: boolean | null,
     @Param('monthsOfCommercialExp', ParseFilterIntPipe)
     monthsOfCommercialExp: number | null,
-  ) {
+  ): Promise<GetPaginatedListOfUser> {
     const filterSettings: FilterSettings = {
       courseCompletion,
       courseEngagement,
@@ -94,6 +96,8 @@ export class StudentController {
       monthsOfCommercialExp,
     };
     return await this.studentService.getFilteredStudents(
+      perPage,
+      pageNumber,
       filterSettings,
       status,
     );

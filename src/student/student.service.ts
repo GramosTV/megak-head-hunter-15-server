@@ -1,13 +1,13 @@
-import { FilterSettings } from 'types';
+import { FilterSettings, GetPaginatedListOfUser, Score, Status } from 'types';
 import { Injectable } from '@nestjs/common';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { User } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Between, Like, MoreThanOrEqual, Repository } from 'typeorm';
-import { GetPaginatedListOfUser, Status } from 'types';
+import { Between, Repository } from 'typeorm';
 import { Role } from './interfaces/user';
+
 @Injectable()
 export class StudentService {
   constructor(
@@ -77,7 +77,12 @@ export class StudentService {
     };
   }
 
-  async getFilteredStudents(filterSettings: FilterSettings, status: Status) {
+  async getFilteredStudents(
+    perPage: number,
+    currentPage = 1,
+    filterSettings: FilterSettings,
+    status: Status,
+  ): Promise<GetPaginatedListOfUser> {
     const {
       courseCompletion,
       courseEngagement,
@@ -90,35 +95,66 @@ export class StudentService {
       canTakeApprenticeship,
       monthsOfCommercialExp,
     } = filterSettings;
-    const results = await User.find({
-      where: [
-        {
-          status,
-          courseCompletion: courseCompletion || MoreThanOrEqual(0),
-          courseEngagement: courseEngagement || MoreThanOrEqual(0),
-          projectDegree: projectDegree || MoreThanOrEqual(0),
-          teamProjectDegree: teamProjectDegree || MoreThanOrEqual(0),
-          expectedTypeWork: (expectedTypeWork as any) || Like('%'),
-          expectedContractType: (expectedContractType as any) || Like('%'),
-          expectedSalary: Between(minNetSalary || 0, maxNetSalary || Infinity),
-          canTakeApprenticeship: canTakeApprenticeship || false,
-          monthsOfCommercialExp: monthsOfCommercialExp || MoreThanOrEqual(0),
+
+    const maxPerPage = perPage;
+
+    const [users, count] = await User.findAndCount({
+      relations: {
+        hr: true,
+      },
+      select: {
+        id: true,
+        email: true,
+        firstName: true,
+        lastName: true,
+        tel: true,
+        githubUsername: true,
+        portfolioUrls: true,
+        bonusProjectUrls: true,
+        bio: true,
+        expectedTypeWork: true,
+        targetWorkCity: true,
+        expectedContractType: true,
+        expectedSalary: true,
+        canTakeApprenticeship: true,
+        monthsOfCommercialExp: true,
+        education: true,
+        workExperience: true,
+        courses: true,
+        courseWork: true,
+        courseCompletion: true,
+        courseEngagement: true,
+        projectDegree: true,
+        teamProjectDegree: true,
+        hr: {
+          email: true,
         },
-        {
-          status,
-          courseCompletion: courseCompletion || MoreThanOrEqual(0),
-          courseEngagement: courseEngagement || MoreThanOrEqual(0),
-          projectDegree: projectDegree || MoreThanOrEqual(0),
-          teamProjectDegree: teamProjectDegree || MoreThanOrEqual(0),
-          expectedTypeWork: (expectedTypeWork as any) || Like('%'),
-          expectedContractType: (expectedContractType as any) || Like('%'),
-          expectedSalary: Between(minNetSalary || 0, maxNetSalary || Infinity),
-          canTakeApprenticeship: canTakeApprenticeship || true,
-          monthsOfCommercialExp: monthsOfCommercialExp || MoreThanOrEqual(0),
-        },
-      ],
+        status: true,
+        reservedTo: true,
+      },
+      where: {
+        status,
+        //@ToDo Why columns with type 'Score' doesn't work properly?
+        // courseCompletion,
+        // courseEngagement: courseEngagement,
+        // projectDegree,
+        // teamProjectDegree,
+        expectedTypeWork,
+        expectedContractType,
+        expectedSalary: Between(minNetSalary || 0, maxNetSalary || 10000000), //@ToDo change to specific number
+        canTakeApprenticeship,
+        monthsOfCommercialExp: monthsOfCommercialExp,
+      },
+      skip: maxPerPage * (currentPage - 1),
+      take: maxPerPage,
     });
-    return results;
+
+    const pagesCount = Math.ceil(count / maxPerPage);
+
+    return {
+      users,
+      pagesCount,
+    };
   }
 
   findOne(id: string) {
