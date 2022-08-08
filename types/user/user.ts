@@ -1,4 +1,4 @@
-import { Role, Status } from '../../src/student/interfaces/user';
+import { Role } from '../../src/student/interfaces/user';
 
 export enum ExpectedTypeWork {
   Local = 'Biuro',
@@ -15,14 +15,17 @@ export enum ExpectedContractType {
   NoPreferences = 'Umowa o dzieło',
 }
 
-export enum Score {
-  zero,
-  one,
-  two,
-  three,
-  four,
-  five,
+export enum Status {
+  AVAILABLE = 'available',
+  RESERVED = 'reserved',
+  HIRED = 'hired',
 }
+
+export enum BoolValues {
+  TRUE = 'true',
+  FALSE = 'false',
+}
+
 export interface AuthUser {
   ok: true;
   email: string;
@@ -48,16 +51,16 @@ export interface User {
   targetWorkCity: string;
   expectedContractType: ExpectedContractType;
   expectedSalary: number;
-  canTakeApprenticeship: boolean;
+  canTakeApprenticeship: BoolValues;
   monthsOfCommercialExp: number;
   education: string;
   workExperience: string;
   courses: string;
   courseWork: string[];
-  courseCompletion: Score;
-  courseEngagement: Score;
-  projectDegree: Score;
-  teamProjectDegree: Score;
+  courseCompletion: number;
+  courseEngagement: number;
+  projectDegree: number;
+  teamProjectDegree: number;
   hr: {
     email: string;
   };

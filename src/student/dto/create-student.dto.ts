@@ -9,7 +9,6 @@ import {
   MinLength,
   ValidateNested,
 } from 'class-validator';
-import { ExpectedContractType, ExpectedTypeWork, Score } from 'types';
 import { Type } from 'class-transformer';
 
 export class CreateStudentDto {
@@ -25,22 +24,22 @@ export class CreateStudentDto {
   @IsInt()
   @Min(0)
   @Max(5)
-  courseCompletion: Score;
+  courseCompletion: number;
 
   @IsInt()
   @Min(0)
   @Max(5)
-  courseEngagement: Score;
+  courseEngagement: number;
 
   @IsInt()
   @Min(0)
   @Max(5)
-  projectDegree: Score;
+  projectDegree: number;
 
   @IsInt()
   @Min(0)
   @Max(5)
-  teamProjectDegree: Score;
+  teamProjectDegree: number;
 
   @IsOptional()
   bonusProjectUrls: string[] | null;
