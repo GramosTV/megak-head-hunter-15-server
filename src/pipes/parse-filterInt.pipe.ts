@@ -4,7 +4,6 @@ import {
   ArgumentMetadata,
   BadRequestException,
 } from '@nestjs/common';
-import { Score } from 'types';
 
 @Injectable()
 export class ParseFilterIntPipe

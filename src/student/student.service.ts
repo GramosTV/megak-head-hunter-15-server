@@ -1,4 +1,4 @@
-import { FilterSettings, GetPaginatedListOfUser, Score, Status } from 'types';
+import { FilterSettings, GetPaginatedListOfUser, Status } from 'types';
 import { Injectable } from '@nestjs/common';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
@@ -134,16 +134,15 @@ export class StudentService {
       },
       where: {
         status,
-        //@ToDo Why columns with type 'Score' doesn't work properly?
-        // courseCompletion,
-        // courseEngagement: courseEngagement,
-        // projectDegree,
-        // teamProjectDegree,
+        courseCompletion,
+        courseEngagement,
+        projectDegree,
+        teamProjectDegree,
         expectedTypeWork,
         expectedContractType,
         expectedSalary: Between(minNetSalary || 0, maxNetSalary || 10000000), //@ToDo change to specific number
         canTakeApprenticeship,
-        monthsOfCommercialExp: monthsOfCommercialExp,
+        monthsOfCommercialExp,
       },
       skip: maxPerPage * (currentPage - 1),
       take: maxPerPage,

@@ -21,14 +21,11 @@ export enum Status {
   HIRED = 'hired',
 }
 
-export enum Score {
-  zero,
-  one,
-  two,
-  three,
-  four,
-  five,
+export enum BoolValues {
+  TRUE = 'true',
+  FALSE = 'false',
 }
+
 export interface AuthUser {
   ok: true;
   email: string;
@@ -54,16 +51,16 @@ export interface User {
   targetWorkCity: string;
   expectedContractType: ExpectedContractType;
   expectedSalary: number;
-  canTakeApprenticeship: boolean;
+  canTakeApprenticeship: BoolValues;
   monthsOfCommercialExp: number;
   education: string;
   workExperience: string;
   courses: string;
   courseWork: string[];
-  courseCompletion: Score;
-  courseEngagement: Score;
-  projectDegree: Score;
-  teamProjectDegree: Score;
+  courseCompletion: number;
+  courseEngagement: number;
+  projectDegree: number;
+  teamProjectDegree: number;
   hr: {
     email: string;
   };

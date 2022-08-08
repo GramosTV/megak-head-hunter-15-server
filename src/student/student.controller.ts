@@ -13,11 +13,11 @@ import { AuthGuard } from '@nestjs/passport';
 import { UserObj } from 'src/decorators/user-obj.decorator';
 import { User } from './entities/user.entity';
 import {
+  BoolValues,
   ExpectedContractType,
   ExpectedTypeWork,
   FilterSettings,
   GetPaginatedListOfUser,
-  Score,
   Status,
 } from 'types';
 import { ParseFilterIntPipe } from 'src/pipes/parse-filterInt.pipe';
@@ -68,10 +68,11 @@ export class StudentController {
     @Param('perPage', ParseFilterIntPipe) perPage: number | null,
     @Param('pageNumber', ParseFilterIntPipe) pageNumber: number | null,
     @Param('status', ParseStatusPipe) status: Status,
-    @Param('courseCompletion', ParseScorePipe) courseCompletion: Score | null,
-    @Param('courseEngagement', ParseScorePipe) courseEngagement: Score | null,
-    @Param('projectDegree', ParseScorePipe) projectDegree: Score | null,
-    @Param('teamProjectDegree', ParseScorePipe) teamProjectDegree: Score | null,
+    @Param('courseCompletion', ParseScorePipe) courseCompletion: number | null,
+    @Param('courseEngagement', ParseScorePipe) courseEngagement: number | null,
+    @Param('projectDegree', ParseScorePipe) projectDegree: number | null,
+    @Param('teamProjectDegree', ParseScorePipe)
+    teamProjectDegree: number | null,
     @Param('expectedTypeWork', ParseExpectedTypeWorkPipe)
     expectedTypeWork: ExpectedTypeWork | null,
     @Param('expectedContractType', ParseExpectedContractTypePipe)
@@ -79,7 +80,7 @@ export class StudentController {
     @Param('minNetSalary', ParseFilterIntPipe) minNetSalary: number | null,
     @Param('maxNetSalary', ParseFilterIntPipe) maxNetSalary: number | null,
     @Param('canTakeApprenticeship', ParseFilterBooleanPipe)
-    canTakeApprenticeship: boolean | null,
+    canTakeApprenticeship: BoolValues,
     @Param('monthsOfCommercialExp', ParseFilterIntPipe)
     monthsOfCommercialExp: number | null,
   ): Promise<GetPaginatedListOfUser> {
