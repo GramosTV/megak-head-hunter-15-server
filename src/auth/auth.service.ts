@@ -96,4 +96,41 @@ export class AuthService {
       maxReservedStudents: user.maxReservedStudents,
     } as AuthUser);
   }
+
+  async activateAccountAndSetPassword(
+    userId: string,
+    activationToken: string,
+    newPassword: string,
+  ) {
+    try {
+      const userToActivate = await User.findOne({
+        where: {
+          id: userId,
+        },
+      });
+      if (
+        !userToActivate ||
+        !userToActivate.activationToken ||
+        userToActivate.activationToken !== activationToken
+      ) {
+        return {
+          ok: false,
+          message: 'Aktywacja nieudana! Nieprawidłowe dane!',
+        };
+      }
+      userToActivate.activationToken = null;
+      userToActivate.status = Status.AVAILABLE;
+      userToActivate.password = await bcrypt.hash(newPassword, 10);
+      await userToActivate.save();
+      return {
+        ok: true,
+        message: 'Hasło ustawione! Konto zostało aktywowane!',
+      };
+    } catch (e) {
+      return {
+        ok: false,
+        message: 'Coś poszło nie tak! Spróbuj ponownie później!',
+      };
+    }
+  }
 }
