@@ -6,7 +6,7 @@ import { v4 as uuid } from 'uuid';
 import { sign } from 'jsonwebtoken';
 import { JwtPayload } from './jwt.strategy';
 import { User } from '../student/entities/user.entity';
-import { AuthUser } from '../../types';
+import { AuthUser, Status } from '../../types';
 
 @Injectable()
 export class AuthService {
@@ -41,12 +41,20 @@ export class AuthService {
       const user = await User.findOneBy({
         email: req.email,
       });
+      if (user && user.status === Status.INACTIVE) {
+        return res.json({
+          ok: false,
+          message:
+            'Twoje konto jest nieaktywne! Kliknij w link wysłany do Ciebie w wiadomości e-mail aby aktywować konto!',
+        });
+      }
       if (!user || !(await bcrypt.compare(req.password, user.password))) {
         return res.json({
           ok: false,
           message: 'Nieprawidłowy email lub hasło!',
         });
       }
+
       const token = this.createToken(await this.generateToken(user));
 
       return res
