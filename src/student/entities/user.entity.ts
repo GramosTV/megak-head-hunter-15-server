@@ -98,9 +98,9 @@ export class User extends BaseEntity {
   @Column({
     width: 5,
     type: 'tinyint',
-    nullable: true,
+    nullable: false,
   })
-  expectedSalary: null | number;
+  expectedSalary: number;
 
   @Column({
     type: 'enum',
