@@ -79,23 +79,42 @@ export class StudentService {
         status: true,
         reservedTo: true,
       },
-      where: {
-        status,
-        firstName: firstName ? Like(`%${firstName}%`) : null,
-        lastName: lastName ? Like(`%${lastName}%`) : null,
-        // Typeorm Like() is protected from sql injection so don't worry
-        courseCompletion,
-        courseEngagement,
-        projectDegree,
-        teamProjectDegree,
-        expectedTypeWork,
-        expectedContractType,
-        expectedSalary:
-          Between(minNetSalary || 0, maxNetSalary || 10000000) || null, //@ToDo change to specific number
-        canTakeApprenticeship,
-        monthsOfCommercialExp,
-        role: Role.STUDENT,
-      },
+      where: [
+        {
+          status,
+          firstName: firstName ? Like(`%${firstName}%`) : null,
+          lastName: lastName ? Like(`%${lastName}%`) : null,
+          // Typeorm Like() is protected from sql injection so don't worry
+          courseCompletion,
+          courseEngagement,
+          projectDegree,
+          teamProjectDegree,
+          expectedTypeWork,
+          expectedContractType,
+          expectedSalary:
+            Between(minNetSalary || 0, maxNetSalary || 10000000) || null, //@ToDo change to specific number
+          canTakeApprenticeship,
+          monthsOfCommercialExp,
+          role: Role.STUDENT,
+        },
+        //Flipped firstName and lastName search
+        {
+          status,
+          firstName: lastName ? Like(`%${lastName}%`) : null,
+          lastName: firstName ? Like(`%${firstName}%`) : null,
+          courseCompletion,
+          courseEngagement,
+          projectDegree,
+          teamProjectDegree,
+          expectedTypeWork,
+          expectedContractType,
+          expectedSalary:
+            Between(minNetSalary || 0, maxNetSalary || 10000000) || null,
+          canTakeApprenticeship,
+          monthsOfCommercialExp,
+          role: Role.STUDENT,
+        },
+      ],
       skip: maxPerPage * (currentPage - 1),
       take: maxPerPage,
     });
