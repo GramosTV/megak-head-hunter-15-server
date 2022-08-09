@@ -140,9 +140,11 @@ export class StudentService {
         teamProjectDegree,
         expectedTypeWork,
         expectedContractType,
-        expectedSalary: Between(minNetSalary || 0, maxNetSalary || 10000000), //@ToDo change to specific number
+        expectedSalary:
+          Between(minNetSalary || 0, maxNetSalary || 10000000) || null, //@ToDo change to specific number
         canTakeApprenticeship,
         monthsOfCommercialExp,
+        role: Role.STUDENT,
       },
       skip: maxPerPage * (currentPage - 1),
       take: maxPerPage,
