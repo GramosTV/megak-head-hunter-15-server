@@ -22,61 +22,6 @@ export class StudentService {
     return 'This action adds a new student';
   }
 
-  async findAll(
-    perPage: number,
-    currentPage = 1,
-  ): Promise<GetPaginatedListOfUser> {
-    const maxPerPage = perPage;
-
-    const [users, count] = await User.findAndCount({
-      relations: {
-        hr: true,
-      },
-      select: {
-        id: true,
-        email: true,
-        firstName: true,
-        lastName: true,
-        tel: true,
-        githubUsername: true,
-        portfolioUrls: true,
-        bonusProjectUrls: true,
-        bio: true,
-        expectedTypeWork: true,
-        targetWorkCity: true,
-        expectedContractType: true,
-        expectedSalary: true,
-        canTakeApprenticeship: true,
-        monthsOfCommercialExp: true,
-        education: true,
-        workExperience: true,
-        courses: true,
-        courseWork: true,
-        courseCompletion: true,
-        courseEngagement: true,
-        projectDegree: true,
-        teamProjectDegree: true,
-        hr: {
-          email: true,
-        },
-        status: true,
-        reservedTo: true,
-      },
-      where: {
-        role: Role.STUDENT,
-      },
-      skip: maxPerPage * (currentPage - 1),
-      take: maxPerPage,
-    });
-
-    const pagesCount = Math.ceil(count / maxPerPage);
-
-    return {
-      users,
-      pagesCount,
-    };
-  }
-
   async getFilteredStudents(
     perPage: number,
     currentPage = 1,
@@ -140,9 +85,11 @@ export class StudentService {
         teamProjectDegree,
         expectedTypeWork,
         expectedContractType,
-        expectedSalary: Between(minNetSalary || 0, maxNetSalary || 10000000), //@ToDo change to specific number
+        expectedSalary:
+          Between(minNetSalary || 0, maxNetSalary || 10000000) || null, //@ToDo change to specific number
         canTakeApprenticeship,
         monthsOfCommercialExp,
+        role: Role.STUDENT,
       },
       skip: maxPerPage * (currentPage - 1),
       take: maxPerPage,
