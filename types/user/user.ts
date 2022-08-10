@@ -1,4 +1,4 @@
-import { Role, Status } from '../../src/student/interfaces/user';
+import { Role } from '../../src/student/interfaces/user';
 
 export enum ExpectedTypeWork {
   Local,
@@ -68,4 +68,15 @@ export interface User {
 export interface GetPaginatedListOfUser {
   users: User[];
   pagesCount: number;
+}
+
+export enum Status {
+  AVAILABLE = 'available',
+  RESERVED = 'reserved',
+  HIRED = 'hired',
+}
+
+export enum BoolValues {
+  TRUE = 'true',
+  FALSE = 'false',
 }
