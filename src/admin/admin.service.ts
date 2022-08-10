@@ -9,7 +9,6 @@ import { CreateAdminDto } from './dto/create-admin.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
 import { StudentService } from 'src/student/student.service';
 import { Repository } from 'typeorm';
-import { Score } from '../../types';
 
 @Injectable()
 export class AdminService {

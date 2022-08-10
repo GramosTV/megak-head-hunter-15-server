@@ -1,12 +1,13 @@
+import { FilterSettings, GetPaginatedListOfUser, Status } from 'types';
 import { Injectable } from '@nestjs/common';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { User } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { GetPaginatedListOfUser } from '../../types';
+import { Between, Repository } from 'typeorm';
 import { Role } from './interfaces/user';
+
 @Injectable()
 export class StudentService {
   constructor(
@@ -21,10 +22,25 @@ export class StudentService {
     return 'This action adds a new student';
   }
 
-  async findAll(
+  async getFilteredStudents(
     perPage: number,
     currentPage = 1,
+    filterSettings: FilterSettings,
+    status: Status,
   ): Promise<GetPaginatedListOfUser> {
+    const {
+      courseCompletion,
+      courseEngagement,
+      projectDegree,
+      teamProjectDegree,
+      expectedTypeWork,
+      expectedContractType,
+      minNetSalary,
+      maxNetSalary,
+      canTakeApprenticeship,
+      monthsOfCommercialExp,
+    } = filterSettings;
+
     const maxPerPage = perPage;
 
     const [users, count] = await User.findAndCount({
@@ -62,6 +78,17 @@ export class StudentService {
         reservedTo: true,
       },
       where: {
+        status,
+        courseCompletion,
+        courseEngagement,
+        projectDegree,
+        teamProjectDegree,
+        expectedTypeWork,
+        expectedContractType,
+        expectedSalary:
+          Between(minNetSalary || 0, maxNetSalary || 10000000) || null, //@ToDo change to specific number
+        canTakeApprenticeship,
+        monthsOfCommercialExp,
         role: Role.STUDENT,
       },
       skip: maxPerPage * (currentPage - 1),

@@ -15,7 +15,7 @@ async function bootstrap() {
       // disableErrorMessages: true, FOR PRODUCTION
       whitelist: true,
       forbidNonWhitelisted: true,
-      transform: true,
+      // transform: true,
     }),
   );
   app.useGlobalFilters(new UnauthorizedExceptionFilter());
