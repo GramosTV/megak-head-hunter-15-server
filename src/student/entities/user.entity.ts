@@ -6,8 +6,13 @@ import {
   OneToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { ExpectedContractType, ExpectedTypeWork, Score } from 'types';
-import { Role, Status } from '../interfaces/user';
+import {
+  BoolValues,
+  ExpectedContractType,
+  ExpectedTypeWork,
+  Status,
+} from 'types';
+import { Role } from '../interfaces/user';
 
 @Entity()
 export class User extends BaseEntity {
@@ -93,16 +98,16 @@ export class User extends BaseEntity {
   @Column({
     width: 5,
     type: 'tinyint',
-    nullable: true,
+    nullable: false,
   })
-  expectedSalary: null | number;
+  expectedSalary: number;
 
   @Column({
-    default: false,
-    type: 'boolean',
+    type: 'enum',
+    enum: BoolValues,
     nullable: true,
   })
-  canTakeApprenticeship: boolean;
+  canTakeApprenticeship: BoolValues | null;
 
   @Column({
     width: 2,
@@ -136,32 +141,32 @@ export class User extends BaseEntity {
   courseWork: string[] | null;
 
   @Column({
-    type: 'enum',
-    enum: Score,
+    width: 1,
+    type: 'tinyint',
     nullable: true,
   })
-  courseCompletion: Score | null;
+  courseCompletion: number | null;
 
   @Column({
-    type: 'enum',
-    enum: Score,
+    width: 1,
+    type: 'tinyint',
     nullable: true,
   })
-  courseEngagement: Score | null;
+  courseEngagement: number | null;
 
   @Column({
-    type: 'enum',
-    enum: Score,
+    width: 1,
+    type: 'tinyint',
     nullable: true,
   })
-  projectDegree: Score | null;
+  projectDegree: number | null;
 
   @Column({
-    type: 'enum',
-    enum: Score,
+    width: 1,
+    type: 'tinyint',
     nullable: true,
   })
-  teamProjectDegree: Score | null;
+  teamProjectDegree: number | null;
 
   @Column({
     nullable: true,
@@ -180,7 +185,7 @@ export class User extends BaseEntity {
     type: 'enum',
     enum: Status,
     nullable: false,
-    default: Status.AVAILABLE,
+    default: Status.INACTIVE,
   })
   status: Status;
 
@@ -189,6 +194,13 @@ export class User extends BaseEntity {
     nullable: true,
   })
   reservedTo: Date | null;
+
+  //activation token
+  @Column({
+    nullable: true,
+    default: null,
+  })
+  activationToken: string | null;
 
   //HR-only fields
 

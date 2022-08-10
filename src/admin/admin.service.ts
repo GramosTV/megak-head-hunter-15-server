@@ -9,11 +9,12 @@ import { CreateAdminDto } from './dto/create-admin.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
 import { StudentService } from 'src/student/student.service';
 import { Repository } from 'typeorm';
-import { Score } from '../../types';
+import { Score } from 'types';
 import { JwtPayload } from 'src/auth/jwt.strategy';
 import { sign } from 'jsonwebtoken';
 import { MailService } from 'src/mail/mail.service';
 import { registrationMailTemplate } from 'src/templates/email/registration-mail';
+
 
 @Injectable()
 export class AdminService {

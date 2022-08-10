@@ -7,7 +7,6 @@ import {
   Min,
   MinLength,
 } from 'class-validator';
-import { Score } from './user';
 
 export class CreateUserDto {
   @IsEmail()
@@ -22,22 +21,22 @@ export class CreateUserDto {
   @IsInt()
   @Min(0)
   @Max(5)
-  courseCompletion: Score;
+  courseCompletion: number;
 
   @IsInt()
   @Min(0)
   @Max(5)
-  courseEngagement: Score;
+  courseEngagement: number;
 
   @IsInt()
   @Min(0)
   @Max(5)
-  projectDegree: Score;
+  projectDegree: number;
 
   @IsInt()
   @Min(0)
   @Max(5)
-  teamProjectDegree: Score;
+  teamProjectDegree: number;
 
   @IsOptional()
   bonusProjectUrls: string[] | null;

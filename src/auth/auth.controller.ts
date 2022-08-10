@@ -1,4 +1,13 @@
-import { Body, Controller, Get, Post, Res, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Res,
+  UseGuards,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthLoginDto } from './dto/auth-login.dto';
 import { Response } from 'express';
@@ -25,5 +34,18 @@ export class AuthController {
   @UseGuards(AuthGuard('jwt'))
   async showUser(@UserObj() user: User, @Res() res: Response) {
     return this.authService.checkActiveUser(user, res);
+  }
+
+  @Patch('/activate/:userId/:activationToken')
+  async activateAccountSetPassword(
+    @Param('userId') userId: string,
+    @Param('activationToken') activationToken: string,
+    @Body() { newPassword }: { newPassword: string },
+  ) {
+    return this.authService.activateAccountAndSetPassword(
+      userId,
+      activationToken,
+      newPassword,
+    );
   }
 }
