@@ -9,10 +9,12 @@ import { CreateAdminDto } from './dto/create-admin.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
 import { StudentService } from 'src/student/student.service';
 import { Repository } from 'typeorm';
+import { Score } from '../../types';
 import { JwtPayload } from 'src/auth/jwt.strategy';
 import { sign } from 'jsonwebtoken';
 import { MailService } from 'src/mail/mail.service';
 import { registrationMailTemplate } from 'src/templates/email/registration-mail';
+
 
 @Injectable()
 export class AdminService {
@@ -57,7 +59,7 @@ export class AdminService {
         const accessToken = sign(payload, process.env.JWT_SECRET, {
           expiresIn,
         });
-        const url = process.env.URL + `/register/${userId}/${accessToken}`;
+        const url = `register/${userId}/${accessToken}`;
         await this.mailService.sendMail(
           user.email,
           'Link do rejestracji do serwisu MegaK Head Hunter',
@@ -70,13 +72,6 @@ export class AdminService {
       ok: true,
       message,
     };
-  }
-  async mailTest() {
-    return await this.mailService.sendMail(
-      'ad@adsd',
-      'Link do rejestracji do serwisu MegaK Head Hunter',
-      registrationMailTemplate('www.asdas.com'),
-    );
   }
   findAll() {
     return `This action returns all admin`;

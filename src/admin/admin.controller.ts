@@ -29,10 +29,6 @@ export class AdminController {
   async addStudents(@Body() createStudentsDtos: ArrayOfStudentsDto) {
     return this.adminService.addStudents(createStudentsDtos);
   }
-  @Get('mailTest')
-  async mailTest() {
-    return this.adminService.mailTest();
-  }
 
   @Get()
   findAll() {
