@@ -185,7 +185,7 @@ export class User extends BaseEntity {
     type: 'enum',
     enum: Status,
     nullable: false,
-    default: Status.AVAILABLE,
+    default: Status.INACTIVE,
   })
   status: Status;
 
@@ -194,6 +194,13 @@ export class User extends BaseEntity {
     nullable: true,
   })
   reservedTo: Date | null;
+
+  //activation token
+  @Column({
+    nullable: true,
+    default: null,
+  })
+  activationToken: string | null;
 
   //HR-only fields
 
