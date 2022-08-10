@@ -1,13 +1,13 @@
-import { FilterSettings } from 'types';
+import { FilterSettings, GetPaginatedListOfUser, Status } from 'types';
 import { Injectable } from '@nestjs/common';
 import { CreateStudentDto } from './dto/create-student.dto';
 import { UpdateStudentDto } from './dto/update-student.dto';
 import { User } from './entities/user.entity';
 import * as bcrypt from 'bcrypt';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Between, Like, MoreThanOrEqual, Repository } from 'typeorm';
-import { GetPaginatedListOfUser } from '../../types';
+import { Between, Like, Repository } from 'typeorm';
 import { Role } from './interfaces/user';
+
 @Injectable()
 export class StudentService {
   constructor(
@@ -22,10 +22,27 @@ export class StudentService {
     return 'This action adds a new student';
   }
 
-  async findAll(
+  async getFilteredStudents(
     perPage: number,
     currentPage = 1,
+    filterSettings: FilterSettings,
+    status: Status,
   ): Promise<GetPaginatedListOfUser> {
+    const {
+      firstName,
+      lastName,
+      courseCompletion,
+      courseEngagement,
+      projectDegree,
+      teamProjectDegree,
+      expectedTypeWork,
+      expectedContractType,
+      minNetSalary,
+      maxNetSalary,
+      canTakeApprenticeship,
+      monthsOfCommercialExp,
+    } = filterSettings;
+
     const maxPerPage = perPage;
 
     const [users, count] = await User.findAndCount({
@@ -62,9 +79,42 @@ export class StudentService {
         status: true,
         reservedTo: true,
       },
-      where: {
-        role: Role.STUDENT,
-      },
+      where: [
+        {
+          status,
+          firstName: firstName ? Like(`%${firstName}%`) : null,
+          lastName: lastName ? Like(`%${lastName}%`) : null,
+          // Typeorm Like() is protected from sql injection so don't worry
+          courseCompletion,
+          courseEngagement,
+          projectDegree,
+          teamProjectDegree,
+          expectedTypeWork,
+          expectedContractType,
+          expectedSalary:
+            Between(minNetSalary || 0, maxNetSalary || 10000000) || null, //@ToDo change to specific number
+          canTakeApprenticeship,
+          monthsOfCommercialExp,
+          role: Role.STUDENT,
+        },
+        //Flipped firstName and lastName search
+        {
+          status,
+          firstName: lastName ? Like(`%${lastName}%`) : null,
+          lastName: firstName ? Like(`%${firstName}%`) : null,
+          courseCompletion,
+          courseEngagement,
+          projectDegree,
+          teamProjectDegree,
+          expectedTypeWork,
+          expectedContractType,
+          expectedSalary:
+            Between(minNetSalary || 0, maxNetSalary || 10000000) || null,
+          canTakeApprenticeship,
+          monthsOfCommercialExp,
+          role: Role.STUDENT,
+        },
+      ],
       skip: maxPerPage * (currentPage - 1),
       take: maxPerPage,
     });
@@ -75,48 +125,6 @@ export class StudentService {
       users,
       pagesCount,
     };
-  }
-
-  async getFilteredStudents(filterSettings: FilterSettings) {
-    const {
-      courseCompletion,
-      courseEngagement,
-      projectDegree,
-      teamProjectDegree,
-      expectedTypeWork,
-      expectedContractType,
-      minNetSalary,
-      maxNetSalary,
-      canTakeApprenticeship,
-      monthsOfCommercialExp,
-    } = filterSettings;
-    const results = await User.find({
-      where: [
-        {
-          courseCompletion: courseCompletion || MoreThanOrEqual(0),
-          courseEngagement: courseEngagement || MoreThanOrEqual(0),
-          projectDegree: projectDegree || MoreThanOrEqual(0),
-          teamProjectDegree: teamProjectDegree || MoreThanOrEqual(0),
-          expectedTypeWork: (expectedTypeWork as any) || Like('%'),
-          expectedContractType: (expectedContractType as any) || Like('%'),
-          expectedSalary: Between(minNetSalary || 0, maxNetSalary || Infinity),
-          canTakeApprenticeship: canTakeApprenticeship || false,
-          monthsOfCommercialExp: monthsOfCommercialExp || MoreThanOrEqual(0),
-        },
-        {
-          courseCompletion: courseCompletion || MoreThanOrEqual(0),
-          courseEngagement: courseEngagement || MoreThanOrEqual(0),
-          projectDegree: projectDegree || MoreThanOrEqual(0),
-          teamProjectDegree: teamProjectDegree || MoreThanOrEqual(0),
-          expectedTypeWork: (expectedTypeWork as any) || Like('%'),
-          expectedContractType: (expectedContractType as any) || Like('%'),
-          expectedSalary: Between(minNetSalary || 0, maxNetSalary || Infinity),
-          canTakeApprenticeship: canTakeApprenticeship || true,
-          monthsOfCommercialExp: monthsOfCommercialExp || MoreThanOrEqual(0),
-        },
-      ],
-    });
-    return results;
   }
 
   findOne(id: string) {

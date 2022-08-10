@@ -4,11 +4,10 @@ import {
   ArgumentMetadata,
   BadRequestException,
 } from '@nestjs/common';
-import { Score } from 'types';
 
 @Injectable()
-export class ParseScorePipe implements PipeTransform<string, Score | null> {
-  transform(value: string, metadata: ArgumentMetadata): Score | null {
+export class ParseScorePipe implements PipeTransform<string, number | null> {
+  transform(value: string, metadata: ArgumentMetadata): number | null {
     let val = Math.floor(parseInt(value));
     if (isNaN(val) && value !== 'null') {
       throw new BadRequestException('Validation failed');

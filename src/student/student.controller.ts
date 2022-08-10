@@ -13,11 +13,12 @@ import { AuthGuard } from '@nestjs/passport';
 import { UserObj } from 'src/decorators/user-obj.decorator';
 import { User } from './entities/user.entity';
 import {
+  BoolValues,
   ExpectedContractType,
   ExpectedTypeWork,
   FilterSettings,
   GetPaginatedListOfUser,
-  Score,
+  Status,
 } from 'types';
 import { ParseFilterIntPipe } from 'src/pipes/parse-filterInt.pipe';
 import { ParseFilterBooleanPipe } from 'src/pipes/parse-filterBoolean.pipe';
@@ -27,6 +28,8 @@ import { ParseScorePipe } from 'src/pipes/parse-score.pipe';
 import { RoleGuard } from 'src/auth/role.guard';
 import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from './interfaces/user';
+import { ParseStatusPipe } from 'src/pipes/parse-status.pipe';
+import { ParseFilterStringPipe } from 'src/pipes/parse-filterString.pipe';
 
 @Controller('student')
 export class StudentController {
@@ -35,17 +38,6 @@ export class StudentController {
   @Post()
   async create(@Body() createStudentDto: CreateStudentDto) {
     return this.studentService.create(createStudentDto);
-  }
-
-  @Get('/:perPage/:pageNumber?')
-  findAll(
-    @Param('perPage') perPage?: string,
-    @Param('pageNumber') pageNumber?: string,
-  ): Promise<GetPaginatedListOfUser> {
-    return this.studentService.findAll(
-      Number(perPage),
-      pageNumber ? Number(pageNumber) : 1,
-    );
   }
 
   @Patch('/password')
@@ -60,25 +52,34 @@ export class StudentController {
   @Roles(Role.HR)
   @UseGuards(AuthGuard('jwt'), RoleGuard)
   @Get(
-    '/filtered/:courseCompletion/:courseEngagement/:projectDegree/:teamProjectDegree/:expectedTypeWork/:expectedContractType/:minNetSalary/:maxNetSalary/:canTakeApprenticeship/:monthsOfCommercialExp',
+    '/filtered/:perPage/:pageNumber/:status/:firstName/:lastName/:courseCompletion/:courseEngagement/:projectDegree/:teamProjectDegree/:expectedTypeWork/:expectedContractType/:minNetSalary/:maxNetSalary/:canTakeApprenticeship/:monthsOfCommercialExp',
   )
   async getFilteredStudents(
-    @Param('courseCompletion', ParseScorePipe) courseCompletion: Score | null,
-    @Param('courseEngagement', ParseScorePipe) courseEngagement: Score | null,
-    @Param('projectDegree', ParseScorePipe) projectDegree: Score | null,
-    @Param('teamProjectDegree', ParseScorePipe) teamProjectDegree: Score | null,
-    @Param('ExpectedTypeWork', ParseExpectedTypeWorkPipe)
+    @Param('perPage', ParseFilterIntPipe) perPage: number | null,
+    @Param('pageNumber', ParseFilterIntPipe) pageNumber: number | null,
+    @Param('status', ParseStatusPipe) status: Status,
+    @Param('firstName', new ParseFilterStringPipe(255))
+    firstName: string | null,
+    @Param('lastName', new ParseFilterStringPipe(128)) lastName: string | null,
+    @Param('courseCompletion', ParseScorePipe) courseCompletion: number | null,
+    @Param('courseEngagement', ParseScorePipe) courseEngagement: number | null,
+    @Param('projectDegree', ParseScorePipe) projectDegree: number | null,
+    @Param('teamProjectDegree', ParseScorePipe)
+    teamProjectDegree: number | null,
+    @Param('expectedTypeWork', ParseExpectedTypeWorkPipe)
     expectedTypeWork: ExpectedTypeWork | null,
-    @Param('ExpectedContractType', ParseExpectedContractTypePipe)
+    @Param('expectedContractType', ParseExpectedContractTypePipe)
     expectedContractType: ExpectedContractType | null,
     @Param('minNetSalary', ParseFilterIntPipe) minNetSalary: number | null,
     @Param('maxNetSalary', ParseFilterIntPipe) maxNetSalary: number | null,
     @Param('canTakeApprenticeship', ParseFilterBooleanPipe)
-    canTakeApprenticeship: boolean | null,
+    canTakeApprenticeship: BoolValues,
     @Param('monthsOfCommercialExp', ParseFilterIntPipe)
     monthsOfCommercialExp: number | null,
-  ) {
+  ): Promise<GetPaginatedListOfUser> {
     const filterSettings: FilterSettings = {
+      firstName,
+      lastName,
       courseCompletion,
       courseEngagement,
       projectDegree,
@@ -90,6 +91,11 @@ export class StudentController {
       canTakeApprenticeship,
       monthsOfCommercialExp,
     };
-    return await this.studentService.getFilteredStudents(filterSettings);
+    return await this.studentService.getFilteredStudents(
+      perPage,
+      pageNumber,
+      filterSettings,
+      status,
+    );
   }
 }
