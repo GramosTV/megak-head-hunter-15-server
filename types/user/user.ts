@@ -21,6 +21,15 @@ export enum Status {
   HIRED = 'hired',
 }
 
+export enum Score {
+  zero,
+  one,
+  two,
+  three,
+  four,
+  five,
+}
+
 export enum BoolValues {
   TRUE = 'true',
   FALSE = 'false',

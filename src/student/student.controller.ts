@@ -29,6 +29,7 @@ import { RoleGuard } from 'src/auth/role.guard';
 import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from './interfaces/user';
 import { ParseStatusPipe } from 'src/pipes/parse-status.pipe';
+import { ParseFilterStringPipe } from 'src/pipes/parse-filterString.pipe';
 
 @Controller('student')
 export class StudentController {
@@ -51,12 +52,15 @@ export class StudentController {
   @Roles(Role.HR)
   @UseGuards(AuthGuard('jwt'), RoleGuard)
   @Get(
-    '/filtered/:perPage/:pageNumber/:status/:courseCompletion/:courseEngagement/:projectDegree/:teamProjectDegree/:expectedTypeWork/:expectedContractType/:minNetSalary/:maxNetSalary/:canTakeApprenticeship/:monthsOfCommercialExp',
+    '/filtered/:perPage/:pageNumber/:status/:firstName/:lastName/:courseCompletion/:courseEngagement/:projectDegree/:teamProjectDegree/:expectedTypeWork/:expectedContractType/:minNetSalary/:maxNetSalary/:canTakeApprenticeship/:monthsOfCommercialExp',
   )
   async getFilteredStudents(
     @Param('perPage', ParseFilterIntPipe) perPage: number | null,
     @Param('pageNumber', ParseFilterIntPipe) pageNumber: number | null,
     @Param('status', ParseStatusPipe) status: Status,
+    @Param('firstName', new ParseFilterStringPipe(255))
+    firstName: string | null,
+    @Param('lastName', new ParseFilterStringPipe(128)) lastName: string | null,
     @Param('courseCompletion', ParseScorePipe) courseCompletion: number | null,
     @Param('courseEngagement', ParseScorePipe) courseEngagement: number | null,
     @Param('projectDegree', ParseScorePipe) projectDegree: number | null,
@@ -74,6 +78,8 @@ export class StudentController {
     monthsOfCommercialExp: number | null,
   ): Promise<GetPaginatedListOfUser> {
     const filterSettings: FilterSettings = {
+      firstName,
+      lastName,
       courseCompletion,
       courseEngagement,
       projectDegree,

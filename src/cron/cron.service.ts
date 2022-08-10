@@ -2,7 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
 import { User } from '../student/entities/user.entity';
 import { LessThan } from 'typeorm';
-import { Role, Status } from '../student/interfaces/user';
+import { Role } from '../student/interfaces/user';
+import { Status } from 'types';
 
 @Injectable()
 export class CronService {
