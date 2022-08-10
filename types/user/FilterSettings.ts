@@ -1,7 +1,7 @@
 import { BoolValues, ExpectedContractType, ExpectedTypeWork } from 'types';
 
 export interface FilterSettings {
-  fistName: string | null;
+  firstName: string | null;
   lastName: string | null;
   courseCompletion: number | null;
   courseEngagement: number | null;
