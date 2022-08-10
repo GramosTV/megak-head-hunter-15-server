@@ -15,7 +15,7 @@ export class StudentService {
   ) {}
   async changePassword(user: User, password: string) {
     user.password = await bcrypt.hash(password, 10);
-    await User.save(user);
+    await user.save();
   }
 
   create(createStudentDto: CreateStudentDto) {
