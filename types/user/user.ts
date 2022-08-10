@@ -38,7 +38,7 @@ export interface User {
   id: string;
   email: string;
   firstName: string;
-  lastName: string;
+  lastName: string | null;
   tel: number;
   githubUsername: string;
   portfolioUrls: string[];
