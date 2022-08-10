@@ -81,12 +81,3 @@ export interface GetPaginatedListOfUser {
   users: User[];
   pagesCount: number;
 }
-
-export enum Score {
-  zero,
-  one,
-  two,
-  three,
-  four,
-  five,
-}
