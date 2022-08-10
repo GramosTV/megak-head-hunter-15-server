@@ -6,7 +6,7 @@ export function registrationMailTemplate(url: string) {
     <br /> 
     <b>To register click <a href="${striptags(url)}">here</a></b>
     <p>This link will expire in ${
-      process.env.REGISTRATION_LINK_EXP_TIME_IN_DAYS + 'days'
+      process.env.REGISTRATION_LINK_EXP_TIME_IN_DAYS + ' days'
     }</p>
     `;
 }
