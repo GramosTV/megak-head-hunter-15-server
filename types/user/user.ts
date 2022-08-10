@@ -41,7 +41,7 @@ export interface User {
   id: string;
   email: string;
   firstName: string;
-  lastName: string;
+  lastName: string | null;
   tel: number;
   githubUsername: string;
   portfolioUrls: string[];
@@ -71,4 +71,15 @@ export interface User {
 export interface GetPaginatedListOfUser {
   users: User[];
   pagesCount: number;
+}
+
+export enum Status {
+  AVAILABLE = 'available',
+  RESERVED = 'reserved',
+  HIRED = 'hired',
+}
+
+export enum BoolValues {
+  TRUE = 'true',
+  FALSE = 'false',
 }

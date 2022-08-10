@@ -1,6 +1,8 @@
 import { BoolValues, ExpectedContractType, ExpectedTypeWork } from 'types';
 
 export interface FilterSettings {
+  firstName: string | null;
+  lastName: string | null;
   courseCompletion: number | null;
   courseEngagement: number | null;
   projectDegree: number | null;
