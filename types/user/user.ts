@@ -73,13 +73,11 @@ export interface GetPaginatedListOfUser {
   pagesCount: number;
 }
 
-export enum Status {
-  AVAILABLE = 'available',
-  RESERVED = 'reserved',
-  HIRED = 'hired',
-}
-
-export enum BoolValues {
-  TRUE = 'true',
-  FALSE = 'false',
+export enum Score {
+  zero,
+  one,
+  two,
+  three,
+  four,
+  five,
 }
