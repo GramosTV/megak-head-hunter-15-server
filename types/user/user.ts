@@ -22,6 +22,15 @@ export enum Status {
   HIRED = 'hired',
 }
 
+export enum Score {
+  zero,
+  one,
+  two,
+  three,
+  four,
+  five,
+}
+
 export enum BoolValues {
   TRUE = 'true',
   FALSE = 'false',
@@ -42,7 +51,7 @@ export interface User {
   id: string;
   email: string;
   firstName: string;
-  lastName: string;
+  lastName: string | null;
   tel: number;
   githubUsername: string;
   portfolioUrls: string[];
