@@ -47,7 +47,9 @@ export class StudentService {
 
     const [users, count] = await User.findAndCount({
       relations: {
-        hr: true,
+        hrToStudent: {
+          hr: true,
+        },
       },
       select: {
         id: true,
@@ -73,11 +75,13 @@ export class StudentService {
         courseEngagement: true,
         projectDegree: true,
         teamProjectDegree: true,
-        hr: {
-          email: true,
+        hrToStudent: {
+          reservedTo: true,
+          hr: {
+            email: true,
+          },
         },
         status: true,
-        reservedTo: true,
       },
       where: [
         {
