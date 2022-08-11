@@ -7,6 +7,7 @@ import { MailService } from '../mail/mail.service';
 import { hireInformationMailTemplate } from '../templates/email/student-hired-info-mail';
 import { Status } from 'types';
 import { HrToStudent } from '../student/entities/hr-to-student.entity';
+import { NotEquals } from 'class-validator';
 
 @Injectable()
 export class HrService {
@@ -190,9 +191,12 @@ export class HrService {
         message: 'Musisz najpierw dodać kursanta do rozmowy żeby go zatrudnić!',
       };
     studentToHire.status = Status.HIRED;
-    studentToHireAndHrCall.reservedTo = null;
     await studentToHire.save();
-    await studentToHireAndHrCall.save();
+    await HrToStudent.delete({
+      student: {
+        id: studentToHire.id,
+      },
+    });
     const admin = await User.findOne({
       select: {
         email: true,
