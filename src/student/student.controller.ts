@@ -49,15 +49,6 @@ export class StudentController {
     return await this.studentService.changePassword(user, password);
   }
 
-  @Roles(Role.STUDENT)
-  @UseGuards(AuthGuard('jwt'), RoleGuard)
-  @Patch('/hired')
-  async changeStatusToHiredAndDeactivateAccount(@UserObj() user: User) {
-    return await this.studentService.changeStatusToHiredAndDeactivateAccount(
-      user,
-    );
-  }
-
   @Roles(Role.HR)
   @UseGuards(AuthGuard('jwt'), RoleGuard)
   @Get(
