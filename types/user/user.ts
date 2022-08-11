@@ -18,7 +18,6 @@ export enum ExpectedContractType {
 export enum Status {
   INACTIVE = 'inactive',
   AVAILABLE = 'available',
-  RESERVED = 'reserved',
   HIRED = 'hired',
 }
 
