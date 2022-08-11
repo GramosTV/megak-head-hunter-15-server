@@ -71,11 +71,13 @@ export interface User {
   courseEngagement: number;
   projectDegree: number;
   teamProjectDegree: number;
-  hr: {
-    email: string;
-  };
+  hrToStudent: {
+    reservedTo: Date;
+    hr: {
+      email: string;
+    };
+  }[];
   status: Status;
-  reservedTo: Date;
 }
 
 export interface GetPaginatedListOfUser {
