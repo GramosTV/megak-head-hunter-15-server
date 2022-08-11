@@ -13,6 +13,7 @@ import {
   Status,
 } from 'types';
 import { Role } from '../interfaces/user';
+import { HrToStudent } from './hr-to-student.entity';
 
 @Entity()
 export class User extends BaseEntity {
@@ -189,12 +190,6 @@ export class User extends BaseEntity {
   })
   status: Status;
 
-  @Column({
-    type: 'date',
-    nullable: true,
-  })
-  reservedTo: Date | null;
-
   //activation token
   @Column({
     nullable: true,
@@ -226,9 +221,6 @@ export class User extends BaseEntity {
   maxReservedStudents: number | null;
 
   //hr - student relation
-  @ManyToOne((type) => User, (user) => user.students)
-  hr: User;
-
-  @OneToMany((type) => User, (user) => user.hr)
-  students: User[];
+  @OneToMany((type) => HrToStudent, (hrToUser) => hrToUser.student)
+  hrToStudent: HrToStudent[];
 }
