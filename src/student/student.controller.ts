@@ -52,7 +52,7 @@ export class StudentController {
   @Roles(Role.HR)
   @UseGuards(AuthGuard('jwt'), RoleGuard)
   @Get(
-    '/filtered/:perPage/:pageNumber/:status/:firstName/:lastName/:courseCompletion/:courseEngagement/:projectDegree/:teamProjectDegree/:expectedTypeWork/:expectedContractType/:minNetSalary/:maxNetSalary/:canTakeApprenticeship/:monthsOfCommercialExp',
+    '/filtered/:perPage/:pageNumber/:status/:firstName/:lastName/:courseCompletion/:courseEngagement/:projectDegree/:teamProjectDegree/:expectedTypeWork/:expectedContractType/:minNetSalary/:maxNetSalary/:canTakeApprenticeship/:monthsOfCommercialExp/:email',
   )
   async getFilteredStudents(
     @Param('perPage', ParseFilterIntPipe) perPage: number | null,
@@ -76,6 +76,7 @@ export class StudentController {
     canTakeApprenticeship: BoolValues,
     @Param('monthsOfCommercialExp', ParseFilterIntPipe)
     monthsOfCommercialExp: number | null,
+    @Param('email', new ParseFilterStringPipe(255)) email: string | null,
   ): Promise<GetPaginatedListOfUser> {
     const filterSettings: FilterSettings = {
       firstName,
@@ -90,6 +91,7 @@ export class StudentController {
       maxNetSalary,
       canTakeApprenticeship,
       monthsOfCommercialExp,
+      email,
     };
     return await this.studentService.getFilteredStudents(
       perPage,

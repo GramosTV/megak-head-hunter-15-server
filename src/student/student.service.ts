@@ -41,6 +41,7 @@ export class StudentService {
       maxNetSalary,
       canTakeApprenticeship,
       monthsOfCommercialExp,
+      email,
     } = filterSettings;
 
     const maxPerPage = perPage;
@@ -100,6 +101,13 @@ export class StudentService {
           canTakeApprenticeship,
           monthsOfCommercialExp,
           role: Role.STUDENT,
+          hrToStudent: email
+            ? {
+                hr: {
+                  email,
+                },
+              }
+            : null,
         },
         //Flipped firstName and lastName search
         {
@@ -117,6 +125,13 @@ export class StudentService {
           canTakeApprenticeship,
           monthsOfCommercialExp,
           role: Role.STUDENT,
+          hrToStudent: email
+            ? {
+                hr: {
+                  email,
+                },
+              }
+            : null,
         },
       ],
       skip: maxPerPage * (currentPage - 1),
