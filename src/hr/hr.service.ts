@@ -66,6 +66,20 @@ export class HrService {
   }
 
   async addStudent(studentEmail: string, hr: User) {
+    const theExistingCallBetweenParts = await HrToStudent.findOne({
+      relations: {
+        hr: true,
+        student: true,
+      },
+      where: {
+        student: {
+          email: studentEmail,
+        },
+        hr: {
+          id: hr.id,
+        },
+      },
+    });
     const studentToAdd = await User.findOne({
       where: {
         email: studentEmail,
@@ -75,6 +89,11 @@ export class HrService {
       return {
         ok: false,
         message: 'Konto o wybranym adresie e-mail nie istnieje!',
+      };
+    if (theExistingCallBetweenParts)
+      return {
+        ok: false,
+        message: 'Ten kursant został już przez Ciebie dodany do rozmowy!',
       };
     if (studentToAdd.status !== Status.AVAILABLE)
       return { ok: false, message: 'Kursant nie jest dostępny do rozmowy!' };
