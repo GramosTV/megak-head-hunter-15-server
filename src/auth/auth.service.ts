@@ -48,13 +48,6 @@ export class AuthService {
             'Twoje konto jest nieaktywne! Kliknij w link wysłany do Ciebie w wiadomości e-mail aby aktywować konto!',
         });
       }
-      if (user && user.status === Status.HIRED) {
-        return res.json({
-          ok: false,
-          message:
-            'Twoje konto jest już nieaktywne! Jesteś zatrudniony! Gratulacje!',
-        });
-      }
       if (!user || !(await bcrypt.compare(req.password, user.password))) {
         return res.json({
           ok: false,

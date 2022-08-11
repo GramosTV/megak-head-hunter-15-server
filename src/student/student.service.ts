@@ -127,11 +127,6 @@ export class StudentService {
     };
   }
 
-  async changeStatusToHiredAndDeactivateAccount(user: User) {
-    user.status = Status.HIRED;
-    return await user.save();
-  }
-
   findOne(id: string) {
     return `This action returns a #${id} student`;
   }
