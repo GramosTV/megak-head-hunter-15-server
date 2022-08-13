@@ -21,6 +21,10 @@ import {
 } from 'class-validator';
 
 export class UpdateStudentDto extends PartialType(CreateStudentDto) {
+  @IsString()
+  @IsNotEmpty({
+    message: 'Musisz wprowadzić adres email!',
+  })
   @IsEmail()
   @MinLength(3, {
     message: 'Wprowadzony adres email jest za krótki!',
@@ -31,13 +35,13 @@ export class UpdateStudentDto extends PartialType(CreateStudentDto) {
   email: string;
 
   @IsOptional()
-  @Matches(/^[\+\(\s.\-\/\d\)]{5,30}$/, {
+  @Matches(/^[\+\(\s.\-\/\d\)]{5,15}$/, {
     message: 'Wprowadź prawidłowy numer telefonu - maksymalnie 15 znaków',
   })
   @MaxLength(15, {
     message: 'Numer telefonu może mieć maksymalnie 15 znaków',
   })
-  tel: number;
+  tel: string;
 
   @IsString()
   @IsNotEmpty()
@@ -89,7 +93,7 @@ export class UpdateStudentDto extends PartialType(CreateStudentDto) {
     maxDecimalPlaces: 0,
   })
   @Min(0)
-  @Max(12)
+  @Max(99)
   monthsOfCommercialExp: number;
 
   @IsString()
