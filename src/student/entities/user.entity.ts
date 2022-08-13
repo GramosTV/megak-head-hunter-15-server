@@ -106,6 +106,7 @@ export class User extends BaseEntity {
     type: 'enum',
     enum: BoolValues,
     nullable: true,
+    default: BoolValues.FALSE,
   })
   canTakeApprenticeship: BoolValues | null;
 
@@ -113,8 +114,9 @@ export class User extends BaseEntity {
     width: 2,
     type: 'tinyint',
     nullable: true,
+    default: 0,
   })
-  monthsOfCommercialExp: number | null;
+  monthsOfCommercialExp: number;
 
   @Column({
     width: 2000,
