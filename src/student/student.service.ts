@@ -139,6 +139,12 @@ export class StudentService {
           id: user.id,
         },
       });
+      if (!userToChange) {
+        return {
+          ok: false,
+          message: `Konto nie istnieje!`,
+        };
+      }
       userToChange = Object.assign(userToChange, changes);
       await userToChange.save();
       return {
