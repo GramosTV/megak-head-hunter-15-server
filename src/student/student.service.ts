@@ -7,6 +7,7 @@ import * as bcrypt from 'bcrypt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Between, Like, Repository } from 'typeorm';
 import { Role } from './interfaces/user';
+import fetch from 'node-fetch';
 
 @Injectable()
 export class StudentService {
@@ -145,6 +146,23 @@ export class StudentService {
           message: `Konto nie istnieje!`,
         };
       }
+      if (!changes.email) {
+        return {
+          ok: false,
+          message: `Email nie może być pusty!`,
+        };
+      }
+      if (changes.githubUsername) {
+        const res = await fetch(
+          `https://api.github.com/users/${changes.githubUsername}`,
+        );
+        if (!res.ok) {
+          return {
+            ok: false,
+            message: `Podana nazwa użytkownia GitHub jest błędna lub konto nie istnieje! Podaj swoją prawidłową nazwę konta w serwisie GitHub!`,
+          };
+        }
+      }
       userToChange = Object.assign(userToChange, changes);
       await userToChange.save();
       return {
@@ -152,9 +170,10 @@ export class StudentService {
         message: `Profil zaktualizowano!`,
       };
     } catch (e) {
+      console.log(e);
       return {
         ok: false,
-        message: `Profil zaktualizowano!`,
+        message: `Wystąpił błąd! Profil nie został zaktualizowany!`,
       };
     }
   }
