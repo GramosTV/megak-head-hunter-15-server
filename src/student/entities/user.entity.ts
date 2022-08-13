@@ -35,10 +35,10 @@ export class User extends BaseEntity {
 
   @Column({
     width: 15,
-    type: 'tinyint',
+    type: 'varchar',
     nullable: true,
   })
-  tel: number | null;
+  tel: string | null;
 
   @Column({
     width: 255,
@@ -97,10 +97,10 @@ export class User extends BaseEntity {
 
   @Column({
     width: 5,
-    type: 'tinyint',
-    nullable: false,
+    type: 'mediumint',
+    nullable: true,
   })
-  expectedSalary: number;
+  expectedSalary: number | null;
 
   @Column({
     type: 'enum',
