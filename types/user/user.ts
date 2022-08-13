@@ -52,7 +52,7 @@ export interface User {
   email: string;
   firstName: string;
   lastName: string | null;
-  tel: number;
+  tel: string;
   githubUsername: string;
   portfolioUrls: string[];
   bonusProjectUrls: string[];
