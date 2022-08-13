@@ -30,6 +30,7 @@ import { Roles } from 'src/decorators/roles.decorator';
 import { Role } from './interfaces/user';
 import { ParseStatusPipe } from 'src/pipes/parse-status.pipe';
 import { ParseFilterStringPipe } from 'src/pipes/parse-filterString.pipe';
+import { UpdateStudentDto } from './dto/update-student.dto';
 
 @Controller('student')
 export class StudentController {
@@ -56,6 +57,16 @@ export class StudentController {
     return await this.studentService.changeStatusToHiredAndDeactivateAccount(
       user,
     );
+  }
+
+  @Roles(Role.STUDENT)
+  @UseGuards(AuthGuard('jwt'), RoleGuard)
+  @Patch('/update')
+  async updateAccount(
+    @UserObj() user: User,
+    @Body() changes: UpdateStudentDto,
+  ) {
+    return await this.studentService.changeStudentData(user, changes);
   }
 
   @Roles(Role.HR)
