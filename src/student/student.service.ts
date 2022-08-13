@@ -41,13 +41,16 @@ export class StudentService {
       maxNetSalary,
       canTakeApprenticeship,
       monthsOfCommercialExp,
+      email,
     } = filterSettings;
 
     const maxPerPage = perPage;
 
     const [users, count] = await User.findAndCount({
       relations: {
-        hr: true,
+        hrToStudent: {
+          hr: true,
+        },
       },
       select: {
         id: true,
@@ -73,11 +76,13 @@ export class StudentService {
         courseEngagement: true,
         projectDegree: true,
         teamProjectDegree: true,
-        hr: {
-          email: true,
+        hrToStudent: {
+          reservedTo: true,
+          hr: {
+            email: true,
+          },
         },
         status: true,
-        reservedTo: true,
       },
       where: [
         {
@@ -96,6 +101,13 @@ export class StudentService {
           canTakeApprenticeship,
           monthsOfCommercialExp,
           role: Role.STUDENT,
+          hrToStudent: email
+            ? {
+                hr: {
+                  email,
+                },
+              }
+            : null,
         },
         //Flipped firstName and lastName search
         {
@@ -113,6 +125,13 @@ export class StudentService {
           canTakeApprenticeship,
           monthsOfCommercialExp,
           role: Role.STUDENT,
+          hrToStudent: email
+            ? {
+                hr: {
+                  email,
+                },
+              }
+            : null,
         },
       ],
       skip: maxPerPage * (currentPage - 1),

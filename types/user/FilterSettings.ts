@@ -13,4 +13,5 @@ export interface FilterSettings {
   maxNetSalary: number | null;
   canTakeApprenticeship: BoolValues | null;
   monthsOfCommercialExp: number | null;
+  email: string | null;
 }

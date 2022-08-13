@@ -18,7 +18,6 @@ export enum ExpectedContractType {
 export enum Status {
   INACTIVE = 'inactive',
   AVAILABLE = 'available',
-  RESERVED = 'reserved',
   HIRED = 'hired',
 }
 
@@ -71,11 +70,13 @@ export interface User {
   courseEngagement: number;
   projectDegree: number;
   teamProjectDegree: number;
-  hr: {
-    email: string;
-  };
+  hrToStudent: {
+    reservedTo: Date;
+    hr: {
+      email: string;
+    };
+  }[];
   status: Status;
-  reservedTo: Date;
 }
 
 export interface GetPaginatedListOfUser {

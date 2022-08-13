@@ -6,6 +6,8 @@ import { HrInterface, Role } from '../student/interfaces/user';
 import { MailService } from '../mail/mail.service';
 import { hireInformationMailTemplate } from '../templates/email/student-hired-info-mail';
 import { Status } from 'types';
+import { HrToStudent } from '../student/entities/hr-to-student.entity';
+import { NotEquals } from 'class-validator';
 
 @Injectable()
 export class HrService {
@@ -24,7 +26,7 @@ export class HrService {
   }
 
   async checkTheNumberOfActualChosenStudents(id: string): Promise<number> {
-    return await User.count({
+    return await HrToStudent.count({
       relations: {
         hr: true,
       },
@@ -65,6 +67,20 @@ export class HrService {
   }
 
   async addStudent(studentEmail: string, hr: User) {
+    const theExistingCallBetweenParts = await HrToStudent.findOne({
+      relations: {
+        hr: true,
+        student: true,
+      },
+      where: {
+        student: {
+          email: studentEmail,
+        },
+        hr: {
+          id: hr.id,
+        },
+      },
+    });
     const studentToAdd = await User.findOne({
       where: {
         email: studentEmail,
@@ -74,6 +90,11 @@ export class HrService {
       return {
         ok: false,
         message: 'Konto o wybranym adresie e-mail nie istnieje!',
+      };
+    if (theExistingCallBetweenParts)
+      return {
+        ok: false,
+        message: 'Ten kursant został już przez Ciebie dodany do rozmowy!',
       };
     if (studentToAdd.status !== Status.AVAILABLE)
       return { ok: false, message: 'Kursant nie jest dostępny do rozmowy!' };
@@ -85,12 +106,13 @@ export class HrService {
         ok: false,
         message: `Nie możesz wybrać do rozmowy więcej niż ${hr.maxReservedStudents} kursantów jednocześnie!`,
       };
-    studentToAdd.hr = hr;
-    studentToAdd.status = Status.RESERVED;
-    studentToAdd.reservedTo = new Date(
+    const newCall = new HrToStudent();
+    newCall.hr = hr;
+    newCall.student = studentToAdd;
+    newCall.reservedTo = new Date(
       new Date().getTime() + 10 * 24 * 60 * 60 * 1000,
     );
-    await studentToAdd.save();
+    await newCall.save();
     return {
       ok: true,
       message: `Dodano kursanta do rozmowy!`,
@@ -99,11 +121,22 @@ export class HrService {
 
   async removeStudent(studentEmail: string, hr: User) {
     const studentToRemove = await User.findOne({
-      relations: {
-        hr: true,
-      },
       where: {
         email: studentEmail,
+      },
+    });
+    const callToRemove = await HrToStudent.findOne({
+      relations: {
+        hr: true,
+        student: true,
+      },
+      where: {
+        student: {
+          email: studentEmail,
+        },
+        hr: {
+          id: hr.id,
+        },
       },
     });
     if (!studentToRemove)
@@ -111,17 +144,14 @@ export class HrService {
         ok: false,
         message: 'Konto o wybranym adresie e-mail nie istnieje!',
       };
-    if (!studentToRemove.hr || studentToRemove.hr.id !== hr.id)
+    if (!callToRemove)
       return {
         ok: false,
         message: 'Ten kursant nie został przez Ciebie dodany do rozmowy!',
       };
     if (studentToRemove.status === Status.HIRED)
       return { ok: false, message: 'Ten kursant jest już zatrudniony!' };
-    studentToRemove.hr = null;
-    studentToRemove.status = Status.AVAILABLE;
-    studentToRemove.reservedTo = null;
-    await studentToRemove.save();
+    await callToRemove.remove();
     return {
       ok: true,
       message: `Usunięto kursanta z listy do rozmowy!`,
@@ -130,11 +160,22 @@ export class HrService {
 
   async hireStudent(studentEmail: string, hr: User) {
     const studentToHire = await User.findOne({
-      relations: {
-        hr: true,
-      },
       where: {
         email: studentEmail,
+      },
+    });
+    const studentToHireAndHrCall = await HrToStudent.findOne({
+      relations: {
+        hr: true,
+        student: true,
+      },
+      where: {
+        student: {
+          email: studentEmail,
+        },
+        hr: {
+          id: hr.id,
+        },
       },
     });
     if (!studentToHire)
@@ -144,20 +185,18 @@ export class HrService {
       };
     if (studentToHire.status === Status.HIRED)
       return { ok: false, message: 'Kursant jest już zatrudniony!' };
-    if (studentToHire.status === Status.AVAILABLE)
+    if (!studentToHireAndHrCall)
       return {
         ok: false,
         message: 'Musisz najpierw dodać kursanta do rozmowy żeby go zatrudnić!',
       };
-    if (studentToHire.hr.id !== hr.id)
-      return {
-        ok: false,
-        message:
-          'Ten kursant został dodany do rozmowy przez inny HR! Nie możesz teraz go zatrudnić!',
-      };
     studentToHire.status = Status.HIRED;
-    studentToHire.reservedTo = null;
     await studentToHire.save();
+    await HrToStudent.delete({
+      student: {
+        id: studentToHire.id,
+      },
+    });
     const admin = await User.findOne({
       select: {
         email: true,

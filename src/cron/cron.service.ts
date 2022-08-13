@@ -1,9 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { Cron } from '@nestjs/schedule';
-import { User } from '../student/entities/user.entity';
 import { LessThan } from 'typeorm';
-import { Role } from '../student/interfaces/user';
-import { Status } from 'types';
+import { HrToStudent } from '../student/entities/hr-to-student.entity';
 
 @Injectable()
 export class CronService {
@@ -11,22 +9,9 @@ export class CronService {
     name: 'Reset students status',
   })
   async resetStudentsStatus() {
-    const currentDate = new Date();
-    const usersToStatusReset = await User.find({
-      relations: {
-        hr: true,
-      },
-      where: {
-        role: Role.STUDENT,
-        reservedTo: LessThan(currentDate),
-      },
-    });
-    if (!usersToStatusReset) return;
-    usersToStatusReset.forEach(async (user) => {
-      user.status = Status.AVAILABLE;
-      user.reservedTo = null;
-      user.hr = null;
-      await user.save();
+    const currentDate = new Date(new Date().getTime() - 24 * 60 * 60 * 1000);
+    await HrToStudent.delete({
+      reservedTo: LessThan(currentDate),
     });
   }
 }
