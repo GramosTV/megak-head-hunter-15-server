@@ -132,15 +132,24 @@ export class StudentService {
     return await user.save();
   }
 
-  findOne(id: string) {
-    return `This action returns a #${id} student`;
-  }
-
-  update(id: string, updateStudentDto: UpdateStudentDto) {
-    return `This action updates a #${id} student`;
-  }
-
-  remove(id: string) {
-    return `This action removes a #${id} student`;
+  async changeStudentData(user: User, changes: UpdateStudentDto) {
+    try {
+      let userToChange = await User.findOne({
+        where: {
+          id: user.id,
+        },
+      });
+      userToChange = Object.assign(userToChange, changes);
+      await userToChange.save();
+      return {
+        ok: true,
+        message: `Profil zaktualizowano!`,
+      };
+    } catch (e) {
+      return {
+        ok: false,
+        message: `Profil zaktualizowano!`,
+      };
+    }
   }
 }
