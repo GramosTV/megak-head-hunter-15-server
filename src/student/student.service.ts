@@ -7,6 +7,7 @@ import * as bcrypt from 'bcrypt';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Between, Like, Repository } from 'typeorm';
 import { Role } from './interfaces/user';
+import fetch from 'node-fetch';
 
 @Injectable()
 export class StudentService {
@@ -151,15 +152,74 @@ export class StudentService {
     return await user.save();
   }
 
-  findOne(id: string) {
-    return `This action returns a #${id} student`;
+  async changeStudentData(user: User, changes: UpdateStudentDto) {
+    try {
+      let userToChange = await User.findOne({
+        where: {
+          id: user.id,
+        },
+      });
+      if (!userToChange) {
+        return {
+          ok: false,
+          message: `Konto nie istnieje!`,
+        };
+      }
+      if (!changes.email) {
+        return {
+          ok: false,
+          message: `Email nie może być pusty!`,
+        };
+      }
+      if (changes.githubUsername) {
+        const res = await fetch(
+          `https://api.github.com/users/${changes.githubUsername}`,
+        );
+        if (!res.ok) {
+          return {
+            ok: false,
+            message: `Podana nazwa użytkownia GitHub jest błędna lub konto nie istnieje! Podaj swoją prawidłową nazwę konta w serwisie GitHub!`,
+          };
+        }
+      }
+      userToChange = Object.assign(userToChange, changes);
+      await userToChange.save();
+      return {
+        ok: true,
+        message: `Profil zaktualizowano!`,
+      };
+    } catch (e) {
+      console.log(e);
+      return {
+        ok: false,
+        message: `Wystąpił błąd! Profil nie został zaktualizowany!`,
+      };
+    }
   }
-
-  update(id: string, updateStudentDto: UpdateStudentDto) {
-    return `This action updates a #${id} student`;
-  }
-
-  remove(id: string) {
-    return `This action removes a #${id} student`;
+  async getStudentProfile(user: User) {
+    return await User.find({
+      where: {
+        id: user.id,
+      },
+      select: {
+        email: true,
+        tel: true,
+        firstName: true,
+        lastName: true,
+        githubUsername: true,
+        portfolioUrls: true,
+        bonusProjectUrls: true,
+        bio: true,
+        expectedTypeWork: true,
+        targetWorkCity: true,
+        expectedContractType: true,
+        expectedSalary: true,
+        canTakeApprenticeship: true,
+        monthsOfCommercialExp: true,
+        education: true,
+        workExperience: true,
+        courses: true,
+      },
+    });
   }
 }
