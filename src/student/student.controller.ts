@@ -69,6 +69,13 @@ export class StudentController {
     return await this.studentService.changeStudentData(user, changes);
   }
 
+  @Roles(Role.STUDENT)
+  @UseGuards(AuthGuard('jwt'), RoleGuard)
+  @Get('/profile')
+  async getStudentProfile(@UserObj() user: User) {
+    return await this.studentService.getStudentProfile(user);
+  }
+
   @Roles(Role.HR)
   @UseGuards(AuthGuard('jwt'), RoleGuard)
   @Get(

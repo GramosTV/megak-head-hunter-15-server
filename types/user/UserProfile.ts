@@ -7,7 +7,7 @@ export interface UserProfile {
   lastName: string;
   githubUsername: string;
   portfolioUrls: string[] | null;
-  projectUrls: string[] | null;
+  bonusProjectUrls: string[] | null;
   bio: string;
   expectedTypeWork: ExpectedTypeWork;
   targetWorkCity: string;

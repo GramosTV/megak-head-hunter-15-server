@@ -152,4 +152,30 @@ export class StudentService {
       };
     }
   }
+  async getStudentProfile(user: User) {
+    return await User.find({
+      where: {
+        id: user.id,
+      },
+      select: {
+        email: true,
+        tel: true,
+        firstName: true,
+        lastName: true,
+        githubUsername: true,
+        portfolioUrls: true,
+        bonusProjectUrls: true,
+        bio: true,
+        expectedTypeWork: true,
+        targetWorkCity: true,
+        expectedContractType: true,
+        expectedSalary: true,
+        canTakeApprenticeship: true,
+        monthsOfCommercialExp: true,
+        education: true,
+        workExperience: true,
+        courses: true,
+      },
+    });
+  }
 }
