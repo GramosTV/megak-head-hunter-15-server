@@ -52,12 +52,14 @@ Maybe you can mention me or this repo in the acknowledgements too
 
 ### :camera: Screenshots
 
-<!-- <div align="center"> 
-  <img src="https://i.imgur.com/RqGirXh.png" alt="screenshot" />
-  <img src="https://i.imgur.com/CDGSceN.png" alt="screenshot" />
-  <img src="https://i.imgur.com/5blD4xl.png" alt="screenshot" />
-  <img src="https://i.imgur.com/Vnah9LN.png" alt="screenshot" />
-</div> -->
+<div align="center"> 
+  <img src="https://i.imgur.com/c16s0XG.png" alt="screenshot" />
+  <img src="https://i.imgur.com/CXPqXbr.png" alt="screenshot" />
+  <img src="https://i.imgur.com/JFsOB6V.png" alt="screenshot" />
+  <img src="https://i.imgur.com/MiRQrHb.png" alt="screenshot" />
+  <img src="https://i.imgur.com/1qCpiKW.png" alt="screenshot" />
+  <img src="https://i.imgur.com/GNnmKWY.png" alt="screenshot" />
+</div>
 
 <!-- TechStack -->
 
