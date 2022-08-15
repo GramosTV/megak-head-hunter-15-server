@@ -76,8 +76,8 @@ export class StudentController {
     return await this.studentService.getStudentProfile(user);
   }
 
-  // @Roles(Role.HR)
-  // @UseGuards(AuthGuard('jwt'), RoleGuard)
+  @Roles(Role.HR)
+  @UseGuards(AuthGuard('jwt'), RoleGuard)
   @Get(
     '/filtered/:perPage/:pageNumber/:status/:firstName/:lastName/:courseCompletion/:courseEngagement/:projectDegree/:teamProjectDegree/:expectedTypeWork/:expectedContractType/:minNetSalary/:maxNetSalary/:canTakeApprenticeship/:monthsOfCommercialExp/:email',
   )
