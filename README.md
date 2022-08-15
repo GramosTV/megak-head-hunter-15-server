@@ -30,7 +30,7 @@ Maybe you can mention me or this repo in the acknowledgements too
 - [About the Project](#star2-about-the-project)
   - [Screenshots](#camera-screenshots)
   - [Tech Stack](#space_invader-tech-stack)
-  - [API endpoints documentation](#dart-features)
+  - [API endpoints documentation](#dart-api-endpoints-documentation)
   - [Color Reference](#art-color-reference)
   - [Environment Variables](#key-environment-variables)
 - [Getting Started](#toolbox-getting-started)
