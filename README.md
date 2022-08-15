@@ -94,42 +94,44 @@ Maybe you can mention me or this repo in the acknowledgements too
 ## :dart: API endpoints documentation
 
 ### Authentication
-### `POST /auth/login`
+#### `POST /auth/login`
 
 <p> 
   Sign in route that verify user data and bcrypt hashed password and returns httpOnly Cookie with user jwt token payload 
 </p>
 <p>
 Accepting JSON:
+
 ```javascript
 {
-	"email":,
-	"password":
+	"email": "email",
+	"password": "password"
 }
 ```
 </p>
 
-### `GET /auth/logout`
+#### `GET /auth/logout`
 
 <p> 
   Log out route that needs authorization by verifing if the user has been signed in before
 </p>
 
-### `PATCH /auth/activate/:userId/:actovationToken`
+#### `PATCH /auth/activate/:userId/:actovationToken`
 
 <p> 
   Activation route used to set the user password for the first time and to activate the account
 </p>
 <p>
 Accepting JSON:
+
 ```javascript
 {
-	"newPassword":
+	"newPassword": "newPassword"
 }
 ```
 </p>
 
-### `GET /auth/me`
+#### `GET /auth/me`
 
 <p> 
   Checking the authentication status route. Returns user payload extracted from cookie, otherwise returns error message which is handled by frontend
@@ -137,107 +139,113 @@ Accepting JSON:
 
 ### Admin features
 
-### `POST /admin/addStudents`
+#### `POST /admin/addStudents`
 
 <p> 
   Route that verify provided users' data and adding users list to the database. Requires signed in user with admin role.
 </p>
 <p>
 Accepting JSON:
+
 ```javascript
 {"students": [
 		{
-		"email": ,
- 		"courseCompletion": ,
-  	"courseEngagement": ,
-  	"projectDegree": ,
-  	"teamProjectDegree": ,
-  	"bonusProjectUrls": 
+		"email": "email",
+ 		"courseCompletion": "courseCompletion",
+  	"courseEngagement": "courseEngagement",
+  	"projectDegree": "projectDegree",
+  	"teamProjectDegree": "teamProjectDegree",
+  	"bonusProjectUrls": "bonusProjectUrls"
 		}
 ]
 }
 ```
 </p>
 
-### `POST /hr`
+#### `POST /hr`
 
 <p> 
   Route that verify provided hr's data and adding hr to the database. Requires signed in user with admin role.
 </p>
 <p>
 Accepting JSON:
+
 ```javascript
 { 
-	"email": , 
-	"fullName": , 
-	"company": , 
-	"maxReservedStudents": 
+	"email": "email", 
+	"fullName": "fullName", 
+	"company": "company", 
+	"maxReservedStudents": "maxReservedStudents"
 }
 ```
 </p>
 
 ### HR features
 
-### `PATCH /hr/add-student`
+#### `PATCH /hr/add-student`
 
 <p> 
   Route that adds selected student to the HR's list Requires signed in user with HR role.
 </p>
 <p>
 Accepting JSON:
+
 ```javascript
 { 
-	"email":
+	"email": "email"
 }
 ```
 </p>
 
-### `PATCH /hr/remove-student`
+#### `PATCH /hr/remove-student`
 
 <p> 
   Route that remove selected student from the HR's list. Requires signed in user with HR role.
 </p>
 <p>
 Accepting JSON:
+
 ```javascript
 { 
-	"email":
+	"email": "email"
 }
 ```
 </p>
 
-### `PATCH /hr/hire-student`
+#### `PATCH /hr/hire-student`
 
 <p> 
   Route to inform about hiring selected student. Changing status of selected student to hired. Hired students are not visible to other HRs. Supports email notifications. Requires signed in user with HR role.
 </p>
 <p>
 Accepting JSON:
+
 ```javascript
 { 
-	"email":
+	"email": "email"
 }
 ```
 </p>
 
 ### Utilities
 
-### `GET /student/filtered/:perPage/:pageNumber/:status/:firstName/:lastName/:courseCompletion/:courseEngagement/:projectDegree/:teamProjectDegree/:expectedTypeWork/:expectedContractType/:minNetSalary/:maxNetSalary/:canTakeApprenticeship/:monthsOfCommercialExp/:email`
+#### `GET /student/filtered/:perPage/:pageNumber/:status/:firstName/:lastName/:courseCompletion/:courseEngagement/:projectDegree/:teamProjectDegree/:expectedTypeWork/:expectedContractType/:minNetSalary/:maxNetSalary/:canTakeApprenticeship/:monthsOfCommercialExp/:email`
 
 <p> 
   Returns the list of students depends on the entered criteria. Criteria set to null are omitted by the service, so the request with null params results with the list of all students. Requires signed in user with HR role.
 </p>
 
-### `PATCH /student/password`
+#### `PATCH /student/password`
 
 <p> 
   Changes the current signed in user password. Requires signed in user regardless of the user's role.
 </p>
 <p>
 Accepting JSON:
+
 ```javascript
 { 
-	"password":
+	"password": "password"
 }
 ```
 </p>
