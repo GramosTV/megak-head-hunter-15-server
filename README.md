@@ -260,6 +260,9 @@ Accepting JSON:
 
 This project uses npm as package manager
 
+For email notification features you have to install and run <a href="https://www.mailslurper.com/">MailSlurper</a>
+
+
 <!-- Run Locally -->
 
 ### :running: Run Locally
