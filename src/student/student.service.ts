@@ -197,7 +197,7 @@ export class StudentService {
     }
   }
   async getStudentProfile(user: User) {
-    return await User.find({
+    const result = await User.findOne({
       where: {
         id: user.id,
       },
@@ -221,5 +221,7 @@ export class StudentService {
         courses: true,
       },
     });
+    console.table(result);
+    return result;
   }
 }
