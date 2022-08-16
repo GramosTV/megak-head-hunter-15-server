@@ -59,9 +59,9 @@ export class UpdateStudentDto extends PartialType(CreateStudentDto) {
   @IsArray()
   portfolioUrls: string[] | null;
 
-  @IsArray()
-  @IsNotEmpty()
-  projectUrls: string[] | null;
+  // @IsArray()
+  // @IsNotEmpty()
+  // projectUrls: string[] | null;
 
   @IsOptional()
   @IsString()
