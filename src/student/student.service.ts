@@ -148,8 +148,17 @@ export class StudentService {
   }
 
   async changeStatusToHiredAndDeactivateAccount(user: User) {
-    user.status = Status.HIRED;
-    return await user.save();
+    try {
+      user.status = Status.HIRED;
+      const save = await user.save();
+      return {
+        ok: true,
+      };
+    } catch (e) {
+      return {
+        ok: false,
+      };
+    }
   }
 
   async changeStudentData(user: User, changes: UpdateStudentDto) {
