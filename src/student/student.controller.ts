@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   UseGuards,
+  Query,
 } from '@nestjs/common';
 import { StudentService } from './student.service';
 import { CreateStudentDto } from './dto/create-student.dto';
@@ -78,32 +79,30 @@ export class StudentController {
 
   @Roles(Role.HR)
   @UseGuards(AuthGuard('jwt'), RoleGuard)
-  @Get(
-    '/filtered/:perPage/:pageNumber/:status/:firstName/:lastName/:courseCompletion/:courseEngagement/:projectDegree/:teamProjectDegree/:expectedTypeWork/:expectedContractType/:minNetSalary/:maxNetSalary/:canTakeApprenticeship/:monthsOfCommercialExp/:email',
-  )
+  @Get('/filtered/filterSettings?')
   async getFilteredStudents(
-    @Param('perPage', ParseFilterIntPipe) perPage: number | null,
-    @Param('pageNumber', ParseFilterIntPipe) pageNumber: number | null,
-    @Param('status', ParseStatusPipe) status: Status,
-    @Param('firstName', new ParseFilterStringPipe(255))
+    @Query('itemsPerPage', ParseFilterIntPipe) perPage: number | null,
+    @Query('page', ParseFilterIntPipe) pageNumber: number | null,
+    @Query('studentStatus', ParseStatusPipe) status: Status,
+    @Query('email', new ParseFilterStringPipe(255)) email: string | null,
+    @Query('firstName', new ParseFilterStringPipe(255))
     firstName: string | null,
-    @Param('lastName', new ParseFilterStringPipe(128)) lastName: string | null,
-    @Param('courseCompletion', ParseScorePipe) courseCompletion: number | null,
-    @Param('courseEngagement', ParseScorePipe) courseEngagement: number | null,
-    @Param('projectDegree', ParseScorePipe) projectDegree: number | null,
-    @Param('teamProjectDegree', ParseScorePipe)
+    @Query('lastName', new ParseFilterStringPipe(128)) lastName: string | null,
+    @Query('courseCompletion', ParseScorePipe) courseCompletion: number | null,
+    @Query('courseEngagement', ParseScorePipe) courseEngagement: number | null,
+    @Query('projectDegree', ParseScorePipe) projectDegree: number | null,
+    @Query('teamProjectDegree', ParseScorePipe)
     teamProjectDegree: number | null,
-    @Param('expectedTypeWork', ParseExpectedTypeWorkPipe)
+    @Query('expectedTypeWork', ParseExpectedTypeWorkPipe)
     expectedTypeWork: ExpectedTypeWork | null,
-    @Param('expectedContractType', ParseExpectedContractTypePipe)
+    @Query('expectedContractType', ParseExpectedContractTypePipe)
     expectedContractType: ExpectedContractType | null,
-    @Param('minNetSalary', ParseFilterIntPipe) minNetSalary: number | null,
-    @Param('maxNetSalary', ParseFilterIntPipe) maxNetSalary: number | null,
-    @Param('canTakeApprenticeship', ParseFilterBooleanPipe)
+    @Query('minNetSalary', ParseFilterIntPipe) minNetSalary: number | null,
+    @Query('maxNetSalary', ParseFilterIntPipe) maxNetSalary: number | null,
+    @Query('canTakeApprenticeship', ParseFilterBooleanPipe)
     canTakeApprenticeship: BoolValues,
-    @Param('monthsOfCommercialExp', ParseFilterIntPipe)
+    @Query('monthsOfCommercialExp', ParseFilterIntPipe)
     monthsOfCommercialExp: number | null,
-    @Param('email', new ParseFilterStringPipe(255)) email: string | null,
   ): Promise<GetPaginatedListOfUser> {
     const filterSettings: FilterSettings = {
       firstName,
