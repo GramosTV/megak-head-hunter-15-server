@@ -16,7 +16,7 @@ export class ParseFilterStringPipe
   }
   transform(value: string, metadata: ArgumentMetadata): string | null {
     let val = value;
-    if (val.length > this.maxLength) {
+    if (val.length > this.maxLength || typeof val !== 'string') {
       throw new BadRequestException('Validation failed');
     } else if (value === 'null') {
       val = null;
