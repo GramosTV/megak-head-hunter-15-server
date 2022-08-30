@@ -46,7 +46,6 @@ export class StudentService {
     } = filterSettings;
 
     const maxPerPage = perPage;
-
     const [users, count] = await User.findAndCount({
       relations: {
         hrToStudent: {
