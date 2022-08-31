@@ -15,8 +15,19 @@ export class StudentService {
     @InjectRepository(User) private userRepository: Repository<User>,
   ) {}
   async changePassword(user: User, password: string) {
-    user.password = await bcrypt.hash(password, 10);
-    await user.save();
+    try {
+      user.password = await bcrypt.hash(password, 10);
+      await user.save();
+      return {
+        ok: true,
+        message: 'Hasło zostało pomyślnie zmienione.',
+      };
+    } catch (e) {
+      return {
+        ok: false,
+        message: 'Hasło zostało pomyślnie zmienione.',
+      };
+    }
   }
 
   create(createStudentDto: CreateStudentDto) {
